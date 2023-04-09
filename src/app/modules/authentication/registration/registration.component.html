@@ -1,0 +1,94 @@
+<div fxFlexFill class='full-width full-height' fxLayoutAlign='center center' fxLayout='row' class='main-panel'>
+  <div class='card card-user' fxFlex='450px'>
+    <div class='card-header'>
+      <h5 class='card-title'>Registration</h5>
+    </div>
+    <div class='card-body'>
+      <form [formGroup]='form' (submit)='register()' fxLayout='column'>
+        <div class='row'>
+          <div class='px-1'>
+            <div class='form-group'>
+              <label>Email</label>
+              <input type='text' class='form-control' placeholder='email' [formControl]='form.controls.email'
+              [class.is-invalid]='form.controls.email.touched && form.controls.email.invalid' >
+
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='px-1'>
+            <div class='form-group'>
+              <label>Firstname</label>
+              <input type='text' class='form-control' placeholder='firstname' [formControl]='form.controls.firstname'
+                     [class.is-invalid]='form.controls.firstname.touched && form.controls.firstname.invalid'>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='px-1'>
+            <div class='form-group'>
+              <label>Lastname</label>
+              <input type='text' class='form-control' placeholder='lastname' [formControl]='form.controls.lastname'
+                     [class.is-invalid]='form.controls.lastname.touched && form.controls.lastname.invalid'>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='px-1'>
+            <div class='form-group'>
+              <label>Password</label>
+              <input type='password' class='form-control' placeholder='password' [formControl]='form.controls.password'
+                     [class.is-invalid]='form.controls.password.touched && form.controls.password.invalid'>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='px-1'>
+            <div class='form-group'>
+              <label>Confirm Password</label>
+              <input type='password' class='form-control' placeholder='confirm password'
+                     [formControl]='form.controls.confirmPassword'
+                     [class.is-invalid]='form.controls.confirmPassword.touched &&  form.controls.confirmPassword.invalid'>
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='px-1'>
+            <div fxLayout='row' fxLayoutGap='10px' fxLayoutAlign='center center'>
+
+              <div fxLayout='row' fxLayoutAlign='center center'>
+              <div ngbDropdown class='nav-item btn-rotate'>
+                  <button class='btn btn-outline-primary' id='dropdownBasic1' ngbDropdownToggle>
+                    {{ currenciesDict[form.controls.walletCurrencyId.value] }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby='dropdownBasic1' class='dropdown-menu dropdown-menu-right'>
+                    <button class='dropdown-item' *ngFor='let currency of currencies'
+                            (click)='form.controls.walletCurrencyId.setValue(currency.value)'>
+                      {{ currency.viewValue }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class='form-group' fxFlex>
+                <label>Wallet Balance</label>
+                <input type='number' class='form-control' placeholder='Balance'
+                       [formControl]='form.controls.walletBalance' [class.is-invalid]='form.controls.walletBalance.touched && form.controls.walletBalance.invalid'>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div *ngIf='errorMsg' fxFlex='50px' style='color: red' fxLayoutAlign='start center'>
+          {{errorMsg}}
+        </div>
+
+        <div fxLayout='row' fxLayoutAlign='space-between center'>
+          <button type='submit' class='btn btn-primary btn-round' [disabled]='form.invalid || !!errorMsg'>Register</button>
+          <button type='button' class='btn btn-info btn-round' (click)='navigateToLogin()'>Back to login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
