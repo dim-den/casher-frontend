@@ -1,0 +1,17 @@
+<div fxLayout='row' fxLayoutAlign='center center'  fxFlex class='full-height'>
+  <div fxLayout='column' fxLayoutAlign='center center' fxLayoutGap='50px'  fxFlex class='full-height' fxFlex='750px'>
+      <div  class='welcome-text'>
+        Welcome to our personal money tracking web application! <br /> <br/>
+        We're excited to help you take control of your finances and achieve your financial goals.
+        Our easy-to-use platform allows you to track your income and expenses, visualize your spending habits all in one
+        place. <br /> <br />
+        Thank you for choosing our personal money tracking web application. Let's start managing your money with ease and
+        confidence today!
+      </div>
+    <div fxLayout='row' fxLayoutAlign='center center' fxLayoutGap='100px' *ngIf='!authService.isAuthorized'>
+        <button type='submit' class='btn btn-primary btn-round' (click)='navigateToLogin()'>Login</button>
+        <button type='button' class='btn btn-info btn-round' (click)='navigateToRegister()'>Register</button>
+      </div>
+  </div>
+</div>
+
