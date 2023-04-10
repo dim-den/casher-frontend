@@ -11,6 +11,7 @@ import {
 import { AuthenticationService } from '../../core/services';
 import { first, take } from 'rxjs';
 import { Credential } from '../../shared/models/credential';
+import { NotificationService } from '../../core/services/notification.service';
 
 export interface LoginFg {
   email: FormControl<string>;
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthenticationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {
     this.loginForm = this.fb.group<LoginFg>({
       email: this.fb.control(null, [Validators.required, Validators.email]),
@@ -62,6 +64,7 @@ export class LoginComponent implements OnInit {
             .pipe(take(1))
             .subscribe(() => (this.errorMsg = null));
         } else {
+          this.notificationService.showSuccess('Enjoy using app :)');
           this.navigateReturnUrl();
         }
       });

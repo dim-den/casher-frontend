@@ -10,12 +10,14 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../services';
+import { NotificationService } from '../services/notification.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {}
 
   intercept(
@@ -34,22 +36,19 @@ export class ErrorInterceptor implements HttpInterceptor {
     const msg = err.error?.Error as string;
     switch (err.status) {
       case 401:
-        //this.notificationService.showError(msg ?? 'message.unAuthorized');
-        //this.authService.logoutAndRedirectToLogin();
+        this.notificationService.showError(
+          msg ?? 'You need to authorize first'
+        );
+        this.authService.logoutAndRedirectToLogin();
         break;
       case 0:
-        // this.notificationService.showError(
-        //   msg ?? 'message.serverIsNotAvailable'
-        // );
+        this.notificationService.showError(msg ?? 'Service is not available');
         break;
       default:
-        if (err.status === 403 && msg && msg.startsWith('Automatic login')) {
-          break;
-        }
         if (this.isBlobError(err)) {
           void this.handleBlobError(err).then();
         } else {
-          //this.notificationService.showError(msg ?? 'message.errorOccurred');
+          this.notificationService.showError(msg ?? 'Error occured');
         }
     }
     if (err.status === 404) {
@@ -71,7 +70,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     const error = (await err.error.text()) as string;
     const msg = JSON.parse(error)?.Error as string;
 
-    // this.notificationService.showError(msg ?? 'message.errorOccurred');
+    this.notificationService.showError(msg ?? 'Error occurred');
   }
 
   private goToNotFound(msg: string): void {

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { AuthenticationService } from '../../modules/core/services';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
