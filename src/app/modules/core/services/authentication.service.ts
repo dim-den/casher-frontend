@@ -36,12 +36,15 @@ export class AuthenticationService {
   signIn(
     credential: Credential,
     withCredentials = true
-  ): Observable<UserAccessData> {
+  ): Observable<UserAccessData | ErrorResponse> {
     return this.http
       .post<UserAccessData>(`${this._baseUrl}/login`, credential, {
         withCredentials,
       })
-      .pipe(tap((userWithToken) => this.setupCurrentUser(userWithToken)));
+      .pipe(
+        catchError((e) => of(e.error)),
+        tap((userWithToken) => this.setupCurrentUser(userWithToken))
+      );
   }
 
   register(

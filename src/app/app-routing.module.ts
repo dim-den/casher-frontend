@@ -6,9 +6,12 @@ import { AuthGuard } from './modules/core/guards';
 export const AppRoutes: Routes = [
   {
     path: '',
+    redirectTo: 'welcome',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
-    canLoad: [AuthGuard],
     children: [
       {
         path: '',
@@ -28,7 +31,7 @@ export const AppRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard',
+    redirectTo: 'welcome',
   },
 ];
 

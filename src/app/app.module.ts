@@ -16,9 +16,10 @@ import { CoreModule } from './modules/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 @NgModule({
-  declarations: [AppComponent, AdminLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, WelcomeComponent],
   imports: [
     HttpClientModule,
     BrowserModule,

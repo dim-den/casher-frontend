@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthenticationService } from '../../core/services';
-import { first } from 'rxjs';
+import { first, take } from 'rxjs';
 import { Credential } from '../../shared/models/credential';
 
 export interface LoginFg {
@@ -23,6 +23,7 @@ export interface LoginFg {
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup<LoginFg>;
+  public errorMsg = '';
 
   constructor(
     private router: Router,
@@ -53,8 +54,16 @@ export class LoginComponent implements OnInit {
     this.authService
       .signIn(value)
       .pipe(first())
-      .subscribe(() => {
-        this.navigateReturnUrl();
+      .subscribe((x) => {
+        if ('Error' in x) {
+          this.errorMsg = x.Error;
+
+          this.loginForm.valueChanges
+            .pipe(take(1))
+            .subscribe(() => (this.errorMsg = null));
+        } else {
+          this.navigateReturnUrl();
+        }
       });
   }
 

@@ -11,7 +11,7 @@
     </a>
   </div>
     <ul class="nav">
-        <li *ngFor="let menuItem of menuItems" routerLinkActive="active" class="{{menuItem.class}}">
+        <li *ngFor="let menuItem of menuItems$ | async" routerLinkActive="active" class="{{menuItem.class}}">
             <a [routerLink]="[menuItem.path]">
                 <i class="nc-icon {{menuItem.icon}}"></i>
                 <p>{{menuItem.title}}</p>

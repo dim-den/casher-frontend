@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Route, Routes } from '@angular/router';
 
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { UserComponent } from '../../pages/user/user.component';
@@ -8,14 +8,32 @@ import { IconsComponent } from '../../pages/icons/icons.component';
 import { MapsComponent } from '../../pages/maps/maps.component';
 import { NotificationsComponent } from '../../pages/notifications/notifications.component';
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
+import { WelcomeComponent } from '../../pages/welcome/welcome.component';
+import { AuthGuard } from '../../modules/core/guards';
 
-export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user',           component: UserComponent },
-    { path: 'table',          component: TableComponent },
-    { path: 'typography',     component: TypographyComponent },
-    { path: 'icons',          component: IconsComponent },
-    { path: 'maps',           component: MapsComponent },
-    { path: 'notifications',  component: NotificationsComponent },
-    { path: 'upgrade',        component: UpgradeComponent }
+export const CommonRoutes: Routes = [
+  { path: 'welcome', component: WelcomeComponent },
+];
+
+export const AuthRoutes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'table', component: TableComponent, canActivate: [AuthGuard] },
+  {
+    path: 'typography',
+    component: TypographyComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'icons', component: IconsComponent, canActivate: [AuthGuard] },
+  { path: 'maps', component: MapsComponent, canActivate: [AuthGuard] },
+  {
+    path: 'notifications',
+    component: NotificationsComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'upgrade', component: UpgradeComponent, canActivate: [AuthGuard] },
 ];

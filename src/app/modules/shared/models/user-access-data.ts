@@ -3,4 +3,6 @@ export interface UserAccessData {
   bearerToken: string;
   id: number;
   exp: Date;
+  firstName: string;
+  lastName: string;
 }
