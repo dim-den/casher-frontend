@@ -9,6 +9,8 @@ import { ROUTES } from '../../sidebar/sidebar.component';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AuthenticationService } from '../../modules/core/services';
+import { WalletService } from '../../modules/core/services/wallet.service';
+import { ECurrency } from '../../modules/shared/enums';
 
 @Component({
   moduleId: module.id,
@@ -26,8 +28,15 @@ export class NavbarComponent implements OnInit {
   public isCollapsed = true;
   @ViewChild('navbar-cmp', { static: false }) button: any;
 
+  public currenciesDict = {
+    [ECurrency.USD]: 'USD',
+    [ECurrency.BYN]: 'BYN',
+    [ECurrency.EUR]: 'EUR',
+  };
+
   constructor(
     public authService: AuthenticationService,
+    public walletService: WalletService,
     location: Location,
     private renderer: Renderer2,
     private element: ElementRef,

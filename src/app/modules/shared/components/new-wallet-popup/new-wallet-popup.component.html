@@ -1,0 +1,50 @@
+<div class='modal-header'>
+  <h4 class='modal-title'>{{ this.editMode ? 'Update Wallet' : 'New Wallet'}}</h4>
+  <button type='button' class='btn-close' aria-label='Close' (click)='close()'></button>
+</div>
+<div class='modal-body'>
+  <div class='form-group'>
+    <label>Name</label>
+    <input type='text' class='form-control' placeholder='name' [formControl]='form.controls.name'
+           [class.is-invalid]='form.controls.name.touched && form.controls.name.invalid'>
+  </div>
+
+
+  <div fxLayout='row' fxLayoutGap='10px' fxLayoutAlign='center end'>
+    <div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown">
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        id="dropdownManual"
+        ngbDropdownAnchor
+        (focus)="myDrop.open()"
+        [disabled]='editMode'
+      >
+        {{ currenciesDict[form.controls.currency.value] }}
+      </button>
+      <div ngbDropdownMenu aria-labelledby='dropdownManual' class='dropdown-menu dropdown-menu-right'>
+        <button class='dropdown-item' *ngFor='let currency of currencies' type='button'
+                (click)='form.controls.currency.setValue(currency.value)'>
+          {{ currency.viewValue }}
+        </button>
+      </div>
+    </div>
+
+    <div class='form-group' fxFlex>
+      <label>Wallet Balance</label>
+      <input type='number' class='form-control' placeholder='Balance'
+             [formControl]='form.controls.balance'
+             [class.is-invalid]='form.controls.balance.touched && form.controls.balance.invalid'>
+    </div>
+  </div>
+
+  <div class='form-group mt-top' fxLayout='row' fxLayoutGap='10px' fxLayoutAlign='start start'>
+    <label>Is Default?</label>
+    <input type='checkbox' class='check' [formControl]='form.controls.isDefault'>
+  </div>
+</div>
+<div class='modal-footer' fxLayoutGap='10px'>
+  <button type='button' class='btn btn-outline-info' (click)='close()'>Cancel</button>
+
+  <button type='button' class='btn btn-outline-success' [disabled]='form.invalid' (click)='save()'>{{ editMode ? 'Update' : 'Save'}}</button>
+</div>

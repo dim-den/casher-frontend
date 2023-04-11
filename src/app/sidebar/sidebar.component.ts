@@ -8,15 +8,38 @@ export interface RouteInfo {
   icon: string;
   class: string;
   noAuth?: boolean;
+  hidden?: boolean;
 }
 
 export const ROUTES: RouteInfo[] = [
+  {
+    path: '/auth/login',
+    title: 'Login',
+    class: '',
+    noAuth: true,
+    hidden: true,
+    icon: '',
+  },
+  {
+    path: '/auth/register',
+    title: 'Register',
+    class: '',
+    noAuth: true,
+    hidden: true,
+    icon: '',
+  },
   {
     path: '/welcome',
     title: 'Welcome',
     icon: 'nc-bank',
     class: '',
     noAuth: true,
+  },
+  {
+    path: '/wallets',
+    title: 'Wallets',
+    icon: 'nc-bank',
+    class: '',
   },
   { path: '/dashboard', title: 'Dashboard', icon: 'nc-bank', class: '' },
   { path: '/icons', title: 'Icons', icon: 'nc-diamond', class: '' },
@@ -56,8 +79,8 @@ export class SidebarComponent implements OnInit {
     this.authService.currentUser$.subscribe(() => {
       this.menuItems$.next(
         this.authService.isAuthorized
-          ? ROUTES.filter((x) => !x.noAuth)
-          : ROUTES.filter((x) => x.noAuth)
+          ? ROUTES.filter((x) => !x.noAuth && !x.hidden)
+          : ROUTES.filter((x) => x.noAuth && !x.hidden)
       );
     });
   }

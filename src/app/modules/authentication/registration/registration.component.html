@@ -58,11 +58,11 @@
 
               <div fxLayout='row' fxLayoutAlign='center center'>
               <div ngbDropdown class='nav-item btn-rotate'>
-                  <button class='btn btn-outline-primary' id='dropdownBasic1' ngbDropdownToggle>
+                  <button class='btn btn-outline-primary' id='dropdownBasic1' ngbDropdownToggle type='button'>
                     {{ currenciesDict[form.controls.walletCurrencyId.value] }}
                   </button>
                   <div ngbDropdownMenu aria-labelledby='dropdownBasic1' class='dropdown-menu dropdown-menu-right'>
-                    <button class='dropdown-item' *ngFor='let currency of currencies'
+                    <button class='dropdown-item' *ngFor='let currency of currencies' type='button'
                             (click)='form.controls.walletCurrencyId.setValue(currency.value)'>
                       {{ currency.viewValue }}
                     </button>

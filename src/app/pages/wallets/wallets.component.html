@@ -1,0 +1,33 @@
+
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6"  *ngFor='let w of wallets'>
+    <div class="card card-stats">
+      <div class="card-body ">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div class="icon-big text-center icon-warning">
+              <img src="assets/img/wallet.png" alt="..." size='24px'>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">{{w.name}}</p>
+              <p class="card-title">{{w.balance}} {{currenciesDict[w.currencyId]}}<p>
+              <p class='card-description default-wallet' *ngIf='w.isDefault'>Default Wallet</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer ">
+        <hr>
+        <div fxLayout='row' fxLayoutAlign='space-between center'>
+          <button class='btn btn-sm btn-outline-danger' (click)='delete(w.id)'>Delete</button>
+          <button class='btn btn-sm btn-outline-info' (click)='edit(w)'>Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-primary btn-lg create-btn" (click)="createNewWallet()">Create New Wallet</button>
+

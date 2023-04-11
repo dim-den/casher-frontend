@@ -10,15 +10,28 @@ import { NotificationsComponent } from '../../pages/notifications/notifications.
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 import { WelcomeComponent } from '../../pages/welcome/welcome.component';
 import { AuthGuard } from '../../modules/core/guards';
+import { WalletsComponent } from '../../pages/wallets/wallets.component';
 
 export const CommonRoutes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
+  {
+    path: 'auth',
+    loadChildren: () =>
+      import('../../modules/authentication/authentication.module').then(
+        (m) => m.AuthenticationModule
+      ),
+  },
 ];
 
 export const AuthRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'wallets',
+    component: WalletsComponent,
     canActivate: [AuthGuard],
   },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },

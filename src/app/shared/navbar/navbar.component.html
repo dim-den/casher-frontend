@@ -1,6 +1,26 @@
 
 <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
   <div class="container-fluid">
+    <div class="navbar-wrapper mg-right" *ngIf='walletService.selectedWallet$ | async as wallet'
+         ngbDropdown #myDrop="ngbDropdown"
+         ngbDropdownAnchor
+         >
+      <span (click)="myDrop.open()">
+           <img src="assets/img/wallet.png" alt="..." size='10px' class='wallet-img'>
+        {{wallet.name}} ({{wallet.balance}} {{currenciesDict[wallet.currencyId]}})
+      </span>
+
+      <div ngbDropdownMenu aria-labelledby='dropdownManual' class='dropdown-menu dropdown-menu-right'
+        *ngIf='(walletService.availableToSelectWallets$ | async)?.length > 0'>
+
+        <button class='dropdown-item' *ngFor='let w of walletService.availableToSelectWallets$ | async'
+          (click)='walletService.setCurrentActiveWallet(w.id)'>
+          {{ w.name }} ({{w.balance}} {{currenciesDict[w.currencyId]}})
+        </button>
+      </div>
+
+    </div>
+
     <div class="navbar-wrapper">
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler" (click)="sidebarToggle()">

@@ -6,7 +6,7 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {AuthenticationService} from "../services";
+import { AuthenticationService } from '../services';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -21,7 +21,7 @@ export class JwtInterceptor implements HttpInterceptor {
     if (user && user.bearerToken) {
       request = request.clone({
         setHeaders: {
-          Authorization: `${user.bearerToken}`,
+          Authorization: `Bearer ${user.bearerToken}`,
         },
       });
     }
