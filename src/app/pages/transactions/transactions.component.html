@@ -1,0 +1,7 @@
+<p>transactions works!</p>
+
+<div *ngFor='let t of transactions'>
+  {{t.id}}. {{t.description}} {{t.amount}} {{t.date }}
+</div>
+
+<button (click)='createTransaction()'>New Transaction</button>

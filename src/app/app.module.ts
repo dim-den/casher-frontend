@@ -18,6 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { WalletsComponent } from './pages/wallets/wallets.component';
+import { TransactionsComponent } from './pages/transactions/transactions.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { WalletsComponent } from './pages/wallets/wallets.component';
     AdminLayoutComponent,
     WelcomeComponent,
     WalletsComponent,
+    TransactionsComponent,
   ],
   imports: [
     HttpClientModule,

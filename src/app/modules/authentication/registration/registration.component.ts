@@ -73,7 +73,7 @@ export class RegistrationComponent implements OnInit {
             .pipe(take(1))
             .subscribe(() => (this.errorMsg = null));
         } else {
-          void this.router.navigate(['dashboard']);
+          void this.router.navigate(['wallets']);
         }
       });
   }

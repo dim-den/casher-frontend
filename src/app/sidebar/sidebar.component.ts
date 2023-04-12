@@ -41,6 +41,12 @@ export const ROUTES: RouteInfo[] = [
     icon: 'nc-bank',
     class: '',
   },
+  {
+    path: '/transactions',
+    title: 'Transactions',
+    icon: 'nc-money-coins',
+    class: '',
+  },
   { path: '/dashboard', title: 'Dashboard', icon: 'nc-bank', class: '' },
   { path: '/icons', title: 'Icons', icon: 'nc-diamond', class: '' },
   { path: '/maps', title: 'Maps', icon: 'nc-pin-3', class: '' },

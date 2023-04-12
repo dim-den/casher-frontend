@@ -11,6 +11,7 @@ import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 import { WelcomeComponent } from '../../pages/welcome/welcome.component';
 import { AuthGuard } from '../../modules/core/guards';
 import { WalletsComponent } from '../../pages/wallets/wallets.component';
+import { TransactionsComponent } from '../../pages/transactions/transactions.component';
 
 export const CommonRoutes: Routes = [
   { path: 'welcome', component: WelcomeComponent },
@@ -32,6 +33,11 @@ export const AuthRoutes: Routes = [
   {
     path: 'wallets',
     component: WalletsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'transactions',
+    component: TransactionsComponent,
     canActivate: [AuthGuard],
   },
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] },

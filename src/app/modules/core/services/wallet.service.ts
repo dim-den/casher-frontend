@@ -5,6 +5,7 @@ import { WalletOverview } from '../../shared/models';
 import { catchError, tap } from 'rxjs/operators';
 import { BaseModel } from '../../shared/models/base-model';
 import { CreateWalletCommand } from '../../shared/models/create-wallet-command';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,16 @@ export class WalletService {
   private loadedWallets: WalletOverview[] = [];
   public availableToSelectWallets$ = new BehaviorSubject<WalletOverview[]>([]);
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthenticationService
+  ) {
+    this.authService.currentUser$.subscribe(() => {
+      this.selectedWallet$.next(null);
+      this.loadedWallets = [];
+      this.availableToSelectWallets$.next([]);
+    });
+  }
 
   public getAllUserWallets(): Observable<WalletOverview[]> {
     return this.http.get<WalletOverview[]>(`${this._baseUrl}`).pipe(

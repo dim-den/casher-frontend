@@ -1,0 +1,42 @@
+.is-invalid {
+  border-color: red;
+}
+.check {
+  height: 20px;
+  width: 20px;
+}
+
+.mt-top {
+  margin-top: 10px;
+}
+.min-h {
+  min-height: 55px;
+}
+
+.category-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 250px;
+
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

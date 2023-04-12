@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
   }
 
   private navigateReturnUrl() {
-    const returnUrl = this.returnUrl || '/';
+    const returnUrl = this.returnUrl || '/wallets';
     void this.router.navigateByUrl(returnUrl);
   }
 }

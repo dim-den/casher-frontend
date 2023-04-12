@@ -3,16 +3,25 @@ import { CommonModule } from '@angular/common';
 import { NewWalletPopupComponent } from './components/new-wallet-popup/new-wallet-popup.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgbDropdown, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDatepickerModule,
+  NgbDropdownModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
+import { NewTransactionPopupComponent } from './components/new-transaction-popup/new-transaction-popup.component';
 
 @NgModule({
-  declarations: [NewWalletPopupComponent, ConfirmPopupComponent],
+  declarations: [
+    NewWalletPopupComponent,
+    ConfirmPopupComponent,
+    NewTransactionPopupComponent,
+  ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     ReactiveFormsModule,
     NgbDropdownModule,
+    NgbDatepickerModule,
   ],
   exports: [NewWalletPopupComponent, ConfirmPopupComponent],
 })
