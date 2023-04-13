@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Output,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -15,6 +21,9 @@ import { NotificationService } from '../../../core/services/notification.service
 import { CreateRegularTransactionCommand } from '../../models/create-regular-transaction-command';
 import { CreateTransactionCommand } from '../../models/create-transaction-command';
 import { WalletService } from '../../../core/services/wallet.service';
+import { TransactionOverview } from '../../models/transaction-overview';
+import { Observable, of } from 'rxjs';
+import { DateTime } from '../../../core/constants';
 
 interface NewTransactionFg {
   amount: FormControl<number>;
@@ -31,13 +40,14 @@ interface NewTransactionFg {
   templateUrl: './new-transaction-popup.component.html',
   styleUrls: ['./new-transaction-popup.component.scss'],
 })
-export class NewTransactionPopupComponent {
+export class NewTransactionPopupComponent implements AfterViewInit {
   @Output() confirmed: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup<NewTransactionFg>;
 
   transactionType = ETransactionType;
 
+  data: TransactionOverview;
   public categoriesDict = {};
 
   periodicityDict = {
@@ -116,6 +126,25 @@ export class NewTransactionPopupComponent {
     }
   }
 
+  get editMode(): boolean {
+    return !!this.data;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.data) {
+      this.form.patchValue(this.data);
+      const date = DateTime.moment(this.data.date).toDate();
+
+      this.form.controls.type.patchValue(this.data.category.type);
+      this.form.controls.categoryId.patchValue(this.data.category.id);
+      this.form.controls.categoryName.patchValue(this.data.category.name);
+      this.form.controls.dateFormatted.patchValue({
+        day: date.getDate(),
+        month: date.getMonth() + 1,
+        year: date.getFullYear(),
+      });
+    }
+  }
   save() {
     const value = this.form.value;
     // @ts-ignore
@@ -129,13 +158,30 @@ export class NewTransactionPopupComponent {
     // @ts-ignore
     value.walletId = this.walletsService.selectedWallet$.value.id;
 
-    const request = value.isRegular
-      ? this.regularTransactionService.create(
-          value as CreateRegularTransactionCommand
-        )
-      : this.transactionService.create(value as CreateTransactionCommand);
+    let request: Observable<any> = of(null);
+    if (!this.editMode) {
+      request = value.isRegular
+        ? this.regularTransactionService.create(
+            value as CreateRegularTransactionCommand
+          )
+        : this.transactionService.create(value as CreateTransactionCommand);
+    } else {
+      request = this.transactionService.update(
+        this.data.id,
+        value as CreateTransactionCommand
+      );
+    }
+
     request.subscribe(() => {
       this.notifyService.showSuccess('Successfully created');
+      this.confirmed.emit();
+      this.activeModal.close();
+    });
+  }
+
+  delete() {
+    this.transactionService.delete(this.data.id).subscribe(() => {
+      this.notifyService.showInfo('Successfully deleted');
       this.confirmed.emit();
       this.activeModal.close();
     });

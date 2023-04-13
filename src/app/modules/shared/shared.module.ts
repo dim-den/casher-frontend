@@ -9,12 +9,14 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.component';
 import { NewTransactionPopupComponent } from './components/new-transaction-popup/new-transaction-popup.component';
+import { ValueSignLightningTsPipe } from './pipes/value-sign-lightning.ts.pipe';
 
 @NgModule({
   declarations: [
     NewWalletPopupComponent,
     ConfirmPopupComponent,
     NewTransactionPopupComponent,
+    ValueSignLightningTsPipe,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,10 @@ import { NewTransactionPopupComponent } from './components/new-transaction-popup
     NgbDropdownModule,
     NgbDatepickerModule,
   ],
-  exports: [NewWalletPopupComponent, ConfirmPopupComponent],
+  exports: [
+    NewWalletPopupComponent,
+    ConfirmPopupComponent,
+    ValueSignLightningTsPipe,
+  ],
 })
 export class SharedModule {}

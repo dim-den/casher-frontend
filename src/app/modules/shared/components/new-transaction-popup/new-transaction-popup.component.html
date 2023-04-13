@@ -1,5 +1,5 @@
 <div class='modal-header'>
-  <h4 class='modal-title'>{{'Create Transaction'}}</h4>
+  <h4 class='modal-title'>{{ editMode ? 'Update Transaction' : 'Create Transaction'}}</h4>
   <button type='button' class='btn-close' aria-label='Close' (click)='close()'></button>
 </div>
 <div class='modal-body'>
@@ -89,7 +89,7 @@
   </div>
 
 
-  <div fxLayout='row' fxLayoutGap='20px' fxLayoutAlign='center center' class='min-h'>
+  <div fxLayout='row' fxLayoutGap='20px' fxLayoutAlign='center center' class='min-h' *ngIf='!editMode'>
     <div class='form-group mt-top' fxLayout='row' fxLayoutGap='10px' fxLayoutAlign='start start' fxFlex>
       <label>Is Regular?</label>
       <input type='checkbox' class='check' [formControl]='form.controls.isRegular'>
@@ -121,5 +121,7 @@
 <div class='modal-footer' fxLayoutGap='10px'>
   <button type='button' class='btn btn-outline-info' (click)='close()'>Cancel</button>
 
-  <button type='button' class='btn btn-outline-success' [disabled]='form.invalid' (click)='save()'>{{'Save'}}</button>
+  <button *ngIf='editMode' type='button' class='btn btn-outline-danger' (click)='delete()'>{{'Delete'}}</button>
+
+  <button type='button' class='btn btn-outline-success' [disabled]='form.invalid || form.untouched' (click)='save()'>{{editMode ? 'Update' : 'Save'}}</button>
 </div>

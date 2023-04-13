@@ -30,4 +30,15 @@ export class TransactionService {
   public create(command: CreateTransactionCommand): Observable<BaseModel> {
     return this.http.post<BaseModel>(`${this._baseUrl}`, command);
   }
+
+  public delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this._baseUrl}/${id}`);
+  }
+
+  public update(
+    id: number,
+    command: CreateTransactionCommand
+  ): Observable<BaseModel> {
+    return this.http.put<BaseModel>(`${this._baseUrl}/${id}`, command);
+  }
 }

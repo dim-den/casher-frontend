@@ -1,7 +1,72 @@
-<p>transactions works!</p>
+<div fxFlexFill fxLayout='row'>
+  <div fxFlex='50'>
 
-<div *ngFor='let t of transactions'>
-  {{t.id}}. {{t.description}} {{t.amount}} {{t.date }}
+  </div>
+  <div class='card card-user transaction-calendar' fxFlex='50'>
+    <div class='card-header'>
+      <div class='card-title' fxFlexFill fxLayoutAlign='space-between center'>
+
+        <button class='btn btn-round btn-primary nc-icon nc-minimal-left'
+                (click)='getNextPeriodTransactions(-1)'></button>
+
+        <div fxLayout='column' fxLayoutAlign='center center'>
+          <div>
+            <span style='font-size: 20px'>{{selectedDate | date: 'MMMM, YYYY'}}</span>
+          </div>
+          <div>
+            <button class='btn btn-sm btn-primary' (click)='createTransaction()'>Create Transaction</button>
+          </div>
+
+        </div>
+
+
+        <button class='btn btn-round btn-primary nc-icon nc-minimal-right'
+                (click)='getNextPeriodTransactions(1)'></button>
+
+      </div>
+    </div>
+    <div>
+      <div class='card'  class='no-box-shadow'>
+        <div *ngFor='let grouped of transactionGroupedByDay' class='card'>
+          <div class='card-header'>
+            <div fxLayout='row' fxLayoutAlign='space-between center'>
+              <span style='font-weight: bold;'>{{grouped.key}}, {{grouped.value[0].date | date: 'EEEE'}}</span>
+
+              <span [style.color]='getSum(grouped.value) | signLight' style='font-size: 20px'>
+              {{getSum(grouped.value) > 0 ? '+' : ''}}{{getSum(grouped.value)}}
+            </span>
+            </div>
+          </div>
+
+          <div class='card-body' style='height: 100%; min-height: 0;' fxLayout='column' fxLayoutGap='10px' >
+            <div fxLayout='row' fxLayoutAlign='space-between center' *ngFor='let t of grouped.value' fxLayoutGap='5px'
+                 style='border-bottom: 1px solid #ddd'>
+              <div fxLayout='column'>
+                <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='5px'>
+                  <span style='font-size: 20px'>{{t.category.name}}</span>
+                  <button class='nc-icon nc-settings-gear-65' style='border: none; background: none;'
+                  (click)='editTransaction(t)'></button>
+                </div>
+                <span>{{t.description}}</span>
+              </div>
+
+              <span [style.color]='getTransactionValue(t) | signLight' style='font-size: 15px'>
+                {{ getTransactionValue(t)}}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div *ngIf='transactions?.length === 0' fxFlexFill fxLayoutAlign='center center' class='no-transaction'>
+          <span style='font-size: 20px'>No transactions for this period</span>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>
 
-<button (click)='createTransaction()'>New Transaction</button>
+

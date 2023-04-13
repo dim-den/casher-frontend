@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { WalletsComponent } from './pages/wallets/wallets.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { TransactionsComponent } from './pages/transactions/transactions.compone
     FooterModule,
     FixedPluginModule,
     CoreModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
