@@ -1,12 +1,96 @@
-<div fxFlexFill fxLayout='row'>
-  <div fxFlex='50'>
+<div fxFlexFill fxLayout='row' fxLayoutGap='20px'>
+  <div fxFlex='60' fxLayout='column'>
+    <div fxLayout='column' fxLayoutGap='20px' fxLayoutAlign='start stretch' fxFlex='80'>
+      <div class='card card-chart'>
+        <div class='card-header'>
+          <div fxLayout='row' fxLayoutAlign='space-between center'>
+            <h5 class='card-title'>Income/Expense per day</h5>
 
+            <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='10px'>
+              <div fxLayout='row' fxLayoutAlign='start center' fxFlex='160px'>
+                <input
+                  class='form-control'
+                  placeholder='yyyy-mm-dd'
+                  name='dp'
+                  ngbDatepicker
+                  #d='ngbDatepicker'
+                  [formControl]='transactionChatForm.controls.start'
+                  [class.is-invalid]='transactionChatForm.controls.start.invalid'>
+                <button class='btn btn-primary nc-icon nc-calendar-60' style='padding: 9px' (click)='d.toggle()'
+                        type='button'></button>
+              </div>
+              <span>-</span>
+              <div fxLayout='row' fxLayoutAlign='start center' fxFlex='160px'>
+                <input
+                  class='form-control'
+                  placeholder='yyyy-mm-dd'
+                  name='dp'
+                  ngbDatepicker
+                  #d2='ngbDatepicker'
+                  [formControl]='transactionChatForm.controls.end'
+                  [class.is-invalid]='transactionChatForm.controls.end.invalid'>
+                <button class='btn btn-primary nc-icon nc-calendar-60' style='padding: 9px' (click)='d2.toggle()'
+                        type='button'></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='card-body'>
+          <canvas id='speedChart' width='400' height='220'></canvas>
+        </div>
+        <div class='card-footer'>
+          <div fxLayoutGap='10px'>
+            <span><i class='fa fa-circle text-info'></i> Income</span>
+            <span><i class='fa fa-circle text-warning'></i> Expense</span>
+            <span><i class='fa fa-circle' style='color: #6CFF1F'></i> Total change</span>
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex='20' fxLayout='row' fxLayoutGap='20px'>
+        <div class='card card-chart category-chart' fxLayout='column' fxFlex='50'>
+          <div class='card-header'>
+            <h5 class='card-title'>Expenses by category</h5>
+          </div>
+          <div class='card-body category-chart' fxFlex='400px' >
+            <canvas  id='expensesCategory' height='350' width='400' [class.hidden]='categoryData?.expenses?.length === 0'>
+
+            </canvas>
+
+            <div *ngIf='categoryData?.expenses?.length === 0' fxLayout='column' fxLayoutAlign='center center'>
+              <div style='font-size: 16px; margin-top: 50px;'>
+                No expenses for selected period
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class='card card-chart category-chart' fxLayout='column' fxFlex='50'>
+          <div class='card-header'>
+            <h5 class='card-title'>Incomes by category</h5>
+          </div>
+          <div class='card-body category-chart' fxFlex='400px'>
+            <canvas id='incomesCategory' height='350' width='400' [class.hidden]='categoryData?.incomes?.length === 0'>
+            </canvas>
+
+
+            <div *ngIf='categoryData?.incomes?.length === 0' fxLayout='column' fxLayoutAlign='center center'>
+              <div style='font-size: 16px; margin-top: 50px;'>
+                No incomes for selected period
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class='card card-user transaction-calendar' fxFlex='50'>
+
+  <div class='card card-user transaction-calendar' fxFlex>
     <div class='card-header'>
       <div class='card-title' fxFlexFill fxLayoutAlign='space-between center'>
 
-        <button class='btn btn-round btn-primary nc-icon nc-minimal-left'
+        <button class='btn btn-round btn-primary nc-icon nc-minimal-left' style='padding: 16px'
                 (click)='getNextPeriodTransactions(-1)'></button>
 
         <div fxLayout='column' fxLayoutAlign='center center'>
@@ -20,17 +104,18 @@
         </div>
 
 
-        <button class='btn btn-round btn-primary nc-icon nc-minimal-right'
+        <button class='btn btn-round btn-primary nc-icon nc-minimal-right' style='padding: 16px'
                 (click)='getNextPeriodTransactions(1)'></button>
 
       </div>
     </div>
     <div>
-      <div class='card'  class='no-box-shadow'>
+      <div class='card' class='no-box-shadow'>
         <div *ngFor='let grouped of transactionGroupedByDay' class='card'>
           <div class='card-header'>
             <div fxLayout='row' fxLayoutAlign='space-between center'>
-              <span style='font-weight: bold;'>{{grouped.key}}, {{grouped.value[0].date | date: 'EEEE'}}</span>
+              <span style='font-weight: bold;'>{{grouped.value[0].date | date: 'dd'}}
+                , {{grouped.value[0].date | date: 'EEEE'}}</span>
 
               <span [style.color]='getSum(grouped.value) | signLight' style='font-size: 20px'>
               {{getSum(grouped.value) > 0 ? '+' : ''}}{{getSum(grouped.value)}}
@@ -38,14 +123,14 @@
             </div>
           </div>
 
-          <div class='card-body' style='height: 100%; min-height: 0;' fxLayout='column' fxLayoutGap='10px' >
+          <div class='card-body' style='height: 100%; min-height: 0;' fxLayout='column' fxLayoutGap='10px'>
             <div fxLayout='row' fxLayoutAlign='space-between center' *ngFor='let t of grouped.value' fxLayoutGap='5px'
                  style='border-bottom: 1px solid #ddd'>
               <div fxLayout='column'>
                 <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='5px'>
                   <span style='font-size: 20px'>{{t.category.name}}</span>
                   <button class='nc-icon nc-settings-gear-65' style='border: none; background: none;'
-                  (click)='editTransaction(t)'></button>
+                          (click)='editTransaction(t)'></button>
                 </div>
                 <span>{{t.description}}</span>
               </div>

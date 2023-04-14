@@ -1,6 +1,19 @@
+:host {
+  height: 100%;
+}
+
+.category-chart {
+  min-height: 460px !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
 .transaction-calendar {
-  max-height: 650px;
-  min-height: 650px;
+  max-height: 108vh;
+  min-height: 700px;
   overflow-y: auto;
 }
 
@@ -11,6 +24,11 @@
 .no-box-shadow {
   box-shadow: none !important;
 }
+
+.is-invalid {
+  border-color: red;
+}
+
 
 ::-webkit-scrollbar {
   width: 5px;

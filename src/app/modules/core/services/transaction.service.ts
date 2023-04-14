@@ -6,6 +6,7 @@ import { TransactionOverview } from '../../shared/models/transaction-overview';
 import { CreateWalletCommand } from '../../shared/models/create-wallet-command';
 import { BaseModel } from '../../shared/models/base-model';
 import { CreateTransactionCommand } from '../../shared/models/create-transaction-command';
+import { TransactionsByCategory } from '../../shared/models/transactions-by-category';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,18 @@ export class TransactionService {
       `${
         this._baseUrl
       }?walletId=${walletId}&start=${start.toDateString()}&end=${end.toDateString()}`
+    );
+  }
+
+  public getCategoryStat(
+    walletId: number,
+    start: Date,
+    end: Date
+  ): Observable<TransactionsByCategory> {
+    return this.http.get<TransactionsByCategory>(
+      `${
+        this._baseUrl
+      }/category?walletId=${walletId}&start=${start.toDateString()}&end=${end.toDateString()}`
     );
   }
 
