@@ -1,13 +1,69 @@
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  IHttpConnectionOptions,
+  LogLevel,
+} from '@microsoft/signalr';
+import { combineLatest } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 @UntilDestroy()
 export class NotificationService {
-  constructor(private toastr: ToastrService) {}
+  private connection: HubConnection;
+
+  constructor(
+    private toastr: ToastrService,
+    private authService: AuthenticationService
+  ) {
+    combineLatest([this.authService.currentUser$])
+      .pipe(untilDestroyed(this))
+      .subscribe(([accessData]) => {
+        if (accessData == null) {
+          void this.connection?.stop();
+          this.connection = null;
+        } else {
+          const options: IHttpConnectionOptions = {
+            accessTokenFactory: () => accessData.bearerToken,
+            withCredentials: false,
+          };
+          this.setupSignalR(options, environment.endpoint);
+        }
+      });
+  }
+
+  private setupSignalR(
+    options: IHttpConnectionOptions,
+    apiEndpoint: string
+  ): void {
+    this.connection = new HubConnectionBuilder()
+      .configureLogging(LogLevel.None)
+      .withUrl(`${apiEndpoint}/notifications`, options)
+      .withAutomaticReconnect()
+      .build();
+
+    this.connection.on('showSuccess', (message: string) => {
+      this.showSuccess(message);
+    });
+    this.connection.on('showInfo', (message: string) => {
+      this.showInfo(message);
+    });
+    this.connection.on('showError', (message: string) => {
+      this.showError(message);
+    });
+
+    this.connection.on('regularTransaction', (message: string) => {
+      this.showError(message);
+    });
+
+    void this.connection.start();
+  }
 
   private showNotification(
     message: string,
