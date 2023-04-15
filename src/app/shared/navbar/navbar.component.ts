@@ -11,6 +11,8 @@ import { Location } from '@angular/common';
 import { AuthenticationService } from '../../modules/core/services';
 import { WalletService } from '../../modules/core/services/wallet.service';
 import { ECurrency } from '../../modules/shared/enums';
+import { NotificationService } from '../../modules/core/services/notification.service';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id,
@@ -27,6 +29,7 @@ export class NavbarComponent implements OnInit {
 
   public isCollapsed = true;
   @ViewChild('navbar-cmp', { static: false }) button: any;
+  @ViewChild('dd', { static: false }) notificationDd: NgbDropdown;
 
   public currenciesDict = {
     [ECurrency.USD]: 'USD',
@@ -40,11 +43,18 @@ export class NavbarComponent implements OnInit {
     location: Location,
     private renderer: Renderer2,
     private element: ElementRef,
-    private router: Router
+    private router: Router,
+    public notificationService: NotificationService
   ) {
     this.location = location;
     this.nativeElement = element.nativeElement;
     this.sidebarVisible = false;
+  }
+
+  markAsRead(notifcationId: number) {
+    this.notificationService.markAsRead(notifcationId).subscribe(() => {
+      this.notificationDd.toggle();
+    });
   }
 
   logout() {

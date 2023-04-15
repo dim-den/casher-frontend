@@ -14,6 +14,7 @@ import {
   CategoryStat,
   TransactionsByCategory,
 } from '../../modules/shared/models/transactions-by-category';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 export interface NgDate {
   day: number;
@@ -31,6 +32,7 @@ export interface TransactionsChartFg {
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.scss'],
 })
+@UntilDestroy()
 export class TransactionsComponent {
   transactions: TransactionOverview[];
   transactionGroupedByDay = [];
@@ -53,12 +55,12 @@ export class TransactionsComponent {
       wait = this.walletService.getAllUserWallets();
     }
 
-    wait.subscribe(() => {
+    wait.pipe(untilDestroyed(this)).subscribe(() => {
       this.getTransactionsForSelectedDate();
     });
 
     walletService.availableToSelectWallets$
-      .pipe(debounceTime(50), skip(1))
+      .pipe(untilDestroyed(this), debounceTime(50), skip(1))
       .subscribe(() => this.getTransactionsForSelectedDate());
 
     const s = DateTime.moment(this.selectedDate).startOf('month').toDate();
@@ -169,6 +171,7 @@ export class TransactionsComponent {
     const e = DateTime.moment(this.selectedDate).endOf('month').toDate();
     this.transactionService
       .getCategoryStat(this.walletService.selectedWallet$.value.id, s, e)
+      .pipe(untilDestroyed(this))
       .subscribe((x) => {
         this.categoryData = x;
         this.drawCategoryData('expensesCategory', x.expenses);

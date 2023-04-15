@@ -40,17 +40,34 @@
     <div *ngIf='authService.isAuthorized' class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav">
 
-        <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
+        <li class="btn-rotate d-inline-block" ngbDropdown #dd='ngbDropdown'>
           <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
-            <i class="nc-icon nc-bell-55"></i>
-            <p>
-              <span class="d-lg-none d-md-block">Some Actions</span>
-            </p>
+              <i class="nc-icon nc-bell-55"></i>
+
+              <div *ngIf='notificationService.unreadNotifications$ | async as notifications' class='notification-count'>
+                <span *ngIf='notifications.length > 0'>{{notifications.length}}</span>
+              </div>
+
+
           </a>
-          <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-left">
-            <a ngbDropdownItem href="javascript:void(0)">Action</a>
-            <a ngbDropdownItem href="javascript:void(0)">Another action</a>
-            <a ngbDropdownItem href="javascript:void(0)">Something else here</a>
+          <div ngbDropdownMenu aria-labelledby='dd' class='dropdown-menu dropdown-menu-very-left notification-scroll'>
+            <div *ngFor='let n of notificationService.unreadNotifications$ | async' ngbDropdownItem
+              class='notification-item'>
+              <div fxLayout='row'>
+                <div fxFlex>
+                  <span><b>{{n.Title}}</b></span> <br/>
+                  <div>{{n.Message}}</div>
+                </div>
+
+                <div fxFlex='5px'>
+                  <button class="btn btn-round btn-icon btn-sm nc-icon nc-simple-remove"
+                  (click)='markAsRead(n.Id);'></button>
+
+                </div>
+
+              </div>
+
+            </div>
           </div>
         </li>
       </ul>

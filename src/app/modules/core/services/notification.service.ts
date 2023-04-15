@@ -7,9 +7,11 @@ import {
   IHttpConnectionOptions,
   LogLevel,
 } from '@microsoft/signalr';
-import { combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { environment } from '../../../../environments/environment';
+import { UnreadNotification } from '../../shared/models/unread-notification';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,9 @@ import { environment } from '../../../../environments/environment';
 export class NotificationService {
   private connection: HubConnection;
 
+  public unreadNotifications$ = new BehaviorSubject<UnreadNotification[]>([]);
   constructor(
+    private http: HttpClient,
     private toastr: ToastrService,
     private authService: AuthenticationService
   ) {
@@ -36,6 +40,12 @@ export class NotificationService {
           this.setupSignalR(options, environment.endpoint);
         }
       });
+  }
+
+  public markAsRead(notificationId: number): Observable<void> {
+    return this.http.post<void>(`/notification/read`, {
+      notificationId,
+    });
   }
 
   private setupSignalR(
@@ -60,6 +70,17 @@ export class NotificationService {
 
     this.connection.on('regularTransaction', (message: string) => {
       this.showError(message);
+    });
+
+    this.connection.on('regularTransaction', (message: string) => {
+      this.showError(message);
+    });
+
+    this.connection.on('unread', (message: string) => {
+      console.log(message);
+      const notifications = JSON.parse(message) as UnreadNotification[];
+      this.unreadNotifications$.next(notifications);
+      console.log(notifications);
     });
 
     void this.connection.start();
