@@ -1,0 +1,132 @@
+<div class='card full-height'>
+  <div class='card-header' style='position: relative'>
+    <h4 class='card-title'> Transactions Search</h4>
+    <div fxLayout='row' fxLayoutAlign='space-between center'>
+
+      <div class='form-group'>
+        <label>Wallet</label>
+        <div ngbDropdown #myDrop='ngbDropdown' class='nav-item btn-rotate' style='margin: 0'>
+          <button class='btn btn-neutral' (click)='myDrop.open()' id='wallet' ngbDropdownToggle>
+            {{ form.controls.walletId.value ? getWalletById(form.controls.walletId.value).name : 'All'}}
+          </button>
+
+          <div ngbDropdownMenu aria-labelledby='wallet' class='dropdown-menu dropdown-menu-right'>
+            <button class='dropdown-item' *ngFor='let w of walletsData'
+                    (click)='form.controls.walletId.setValue(w?.id ?? null)'>
+              {{ w ? w.name : 'All' }}
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class='form-group'>
+        <label>Transaction Date Filter</label>
+        <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='10px'>
+
+          <div fxLayout='row' fxLayoutAlign='start center' fxFlex='160px'>
+            <input
+              class='form-control'
+              placeholder='yyyy-mm-dd'
+              name='dp'
+              ngbDatepicker
+              #d='ngbDatepicker'
+              [formControl]='dateForm.controls.start'
+              [class.is-invalid]='dateForm.controls.start.invalid'>
+            <button class='btn nc-icon nc-calendar-60' style='padding: 9px' (click)='d.toggle()'
+                    type='button'></button>
+          </div>
+          <span>-</span>
+          <div fxLayout='row' fxLayoutAlign='start center' fxFlex='160px'>
+            <input
+              class='form-control'
+              placeholder='yyyy-mm-dd'
+              name='dp'
+              ngbDatepicker
+              #d2='ngbDatepicker'
+              [formControl]='dateForm.controls.end'
+              [class.is-invalid]='dateForm.controls.end.invalid'>
+            <button class='btn nc-icon nc-calendar-60' style='padding: 9px' (click)='d2.toggle()'
+                    type='button'></button>
+          </div>
+        </div>
+      </div>
+
+
+      <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='10px'>
+        <div class='form-group' fxFlex='100px'>
+          <label>Min Amount</label>
+          <input type='number' class='form-control' placeholder='amount'
+                 [formControl]='form.controls.minAmount'>
+        </div>
+
+        <span>-</span>
+
+        <div class='form-group' fxFlex='100px'>
+          <label>Max Amount</label>
+          <input type='number' class='form-control' placeholder='amount'
+                 [formControl]='form.controls.maxAmount'>
+        </div>
+      </div>
+
+
+      <div class='form-group'>
+        <label>Category</label>
+        <input type='text' class='form-control' placeholder='category' [formControl]='form.controls.category'>
+      </div>
+
+      <div class='form-group'>
+        <label>Description</label>
+        <input type='text' class='form-control' placeholder='description' [formControl]='form.controls.description'>
+      </div>
+
+      <div class='d-flex justify-content-between p-2'>
+        <ngb-pagination
+          class='pagination-red'
+          [collectionSize]='items.totalCount'
+          [(page)]='page'
+          [pageSize]='pageSize'
+          (pageChange)='loadTransactions()'
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+
+  <div class='card-body table-data'>
+    <table class='table table-striped'>
+      <thead>
+      <tr>
+        <th scope='col'>#</th>
+        <th scope='col' sortable='walletId' (sort)='onSort($event)'>Wallet Name</th>
+        <th scope='col' sortable='date' (sort)='onSort($event)'>Date</th>
+        <th scope='col' sortable='amountByType' (sort)='onSort($event)'>Amount</th>
+        <th scope='col' sortable='category' (sort)='onSort($event)'>Category</th>
+        <th scope='col' sortable='description' (sort)='onSort($event)'>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor='let t of items.items; index as i'>
+        <th scope='row'>{{ i + 1 }}</th>
+        <td>{{ t.walletName}}</td>
+        <td>
+          {{ t.date | date }}
+        </td>
+        <td>
+          <span [style.color]='getTransactionValue(t) | signLight'>
+                {{ getTransactionValue(t)}}
+          </span>
+        </td>
+        <td>{{ t.category.name }}</td>
+        <td>{{ t.description }}</td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div *ngIf='items.items.length === 0' style='margin-top: 200px;margin-bottom: 200px' fxLayoutAlign='center center'>
+      <span style='font-size: 20px;'>No transactions found with selected filters</span>
+    </div>
+  </div>
+</div>

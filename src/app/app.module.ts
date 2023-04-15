@@ -20,6 +20,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { WalletsComponent } from './pages/wallets/wallets.component';
 import { TransactionsComponent } from './pages/transactions/transactions.component';
 import { SharedModule } from './modules/shared/shared.module';
+import { SearchComponent } from './pages/search/search.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SharedModule } from './modules/shared/shared.module';
     WelcomeComponent,
     WalletsComponent,
     TransactionsComponent,
+    SearchComponent,
   ],
   imports: [
     HttpClientModule,

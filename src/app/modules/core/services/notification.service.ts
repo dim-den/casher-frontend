@@ -77,10 +77,8 @@ export class NotificationService {
     });
 
     this.connection.on('unread', (message: string) => {
-      console.log(message);
       const notifications = JSON.parse(message) as UnreadNotification[];
       this.unreadNotifications$.next(notifications);
-      console.log(notifications);
     });
 
     void this.connection.start();

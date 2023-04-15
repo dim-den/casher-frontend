@@ -22,7 +22,7 @@ export interface NgDate {
   year: number;
 }
 
-export interface TransactionsChartFg {
+export interface DateRangePickerFg {
   start: FormControl<NgDate>;
   end: FormControl<NgDate>;
 }
@@ -40,7 +40,7 @@ export class TransactionsComponent {
   transcationType = ETransactionType;
   selectedDate = new Date();
 
-  transactionChatForm: FormGroup<TransactionsChartFg>;
+  transactionChatForm: FormGroup<DateRangePickerFg>;
 
   categoryData: TransactionsByCategory;
 
@@ -65,7 +65,7 @@ export class TransactionsComponent {
 
     const s = DateTime.moment(this.selectedDate).startOf('month').toDate();
     const e = DateTime.moment(this.selectedDate).endOf('month').toDate();
-    this.transactionChatForm = this.fb.group<TransactionsChartFg>({
+    this.transactionChatForm = this.fb.group<DateRangePickerFg>({
       start: this.fb.control({
         day: s.getDate(),
         month: s.getMonth() + 1,

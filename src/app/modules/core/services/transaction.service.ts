@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { WalletOverview } from '../../shared/models';
 import { TransactionOverview } from '../../shared/models/transaction-overview';
-import { CreateWalletCommand } from '../../shared/models/create-wallet-command';
 import { BaseModel } from '../../shared/models/base-model';
 import { CreateTransactionCommand } from '../../shared/models/create-transaction-command';
 import { TransactionsByCategory } from '../../shared/models/transactions-by-category';
+import { Pageable } from '../../shared/models/pageable';
+import { FilterValue, SieveBuilder, SortValue } from '../../shared/sieve';
+import { TransactionSearch } from '../../shared/models/transaction-search';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ import { TransactionsByCategory } from '../../shared/models/transactions-by-cate
 export class TransactionService {
   private readonly _baseUrl = '/transaction';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sieve: SieveBuilder) {}
 
   public getTransactions(
     walletId: number,
@@ -38,6 +40,24 @@ export class TransactionService {
         this._baseUrl
       }/category?walletId=${walletId}&start=${start.toDateString()}&end=${end.toDateString()}`
     );
+  }
+
+  public search(
+    sorts: SortValue[] = null,
+    filters: FilterValue[] = null,
+    pageStart: number = null,
+    pageSize: number = 50
+  ): Observable<Pageable<TransactionSearch>> {
+    const params = this.sieve.getQueryParamsString(
+      sorts,
+      filters,
+      pageStart,
+      pageSize
+    );
+    console.log(params);
+    return this.http
+      .get<Pageable<TransactionSearch>>(`${this._baseUrl}/search${params}`)
+      .pipe(catchError(() => of(Pageable.Empty<TransactionSearch>())));
   }
 
   public create(command: CreateTransactionCommand): Observable<BaseModel> {

@@ -1,0 +1,17 @@
+export enum EFilterOperation {
+  Equals = '==',
+  NotEquals = '!=',
+  GreaterThan = '>',
+  LessThan = '<',
+  GreaterThanOrEqual = '>=',
+  LessThanOrEqual = '<=',
+  Contains = '@=',
+  StartsWith = '_=',
+  DoesNotContains = '!@=',
+  DoesNotStartsWith = '!_=',
+  CaseInsensitiveStringContains = '@=*',
+  CaseInsensitiveStringStartsWith = '_=*',
+  CaseInsensitiveStringEquals = '==*',
+  CaseInsensitiveStringDoesNotContains = '!@=*',
+  CaseInsensitiveStringDoesStartsWith = '!_=*',
+}
