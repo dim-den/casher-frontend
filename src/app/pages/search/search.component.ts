@@ -140,6 +140,18 @@ export class SearchComponent {
       });
   }
 
+  exportToExcel() {
+    this.transactionService
+      .exportToExcel(
+        [...this.additionalSorts],
+        [
+          this.startDateFilter,
+          this.endDateFilter,
+          ...this.searchFilters,
+        ].filter((x) => !!x)
+      )
+      .subscribe();
+  }
   getWalletById(id: number): WalletOverview {
     return this.walletsData.find((x) => x?.id === id);
   }

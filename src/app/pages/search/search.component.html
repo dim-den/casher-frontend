@@ -1,9 +1,15 @@
 <div class='card full-height'>
   <div class='card-header' style='position: relative'>
-    <h4 class='card-title'> Transactions Search</h4>
+    <h4 class='card-title'>
+      <div fxLayout='row' fxLayoutAlign='space-between center'>
+        <span>Transactions Search</span>
+
+        <button class='btn btn-sm btn-outline-default btn-sm' fxFlex='150px' style='font-size: 12px' (click)='exportToExcel()'>Export to Excel</button>
+      </div>
+    </h4>
     <div fxLayout='row' fxLayoutAlign='space-between center'>
 
-      <div class='form-group'>
+      <div class='form-group' fxFlex='130px'>
         <label>Wallet</label>
         <div ngbDropdown #myDrop='ngbDropdown' class='nav-item btn-rotate' style='margin: 0'>
           <button class='btn btn-neutral' (click)='myDrop.open()' id='wallet' ngbDropdownToggle>
@@ -80,7 +86,7 @@
         <input type='text' class='form-control' placeholder='description' [formControl]='form.controls.description'>
       </div>
 
-      <div class='d-flex justify-content-between p-2'>
+      <div class='d-flex justify-content-between p-2' fxFlex='200px'>
         <ngb-pagination
           class='pagination-red'
           [collectionSize]='items.totalCount'
