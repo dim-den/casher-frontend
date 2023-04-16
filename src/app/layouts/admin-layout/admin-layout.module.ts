@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthRoutes, CommonRoutes } from './admin-layout.routing';
 
@@ -15,6 +15,7 @@ import { NotificationsComponent } from '../../pages/notifications/notifications.
 import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlexModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
@@ -22,6 +23,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule.forChild([...CommonRoutes, ...AuthRoutes]),
     FormsModule,
     NgbModule,
+    FlexModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     DashboardComponent,

@@ -61,6 +61,15 @@ export class AuthenticationService {
       );
   }
 
+  public resetPassword(value: {
+    password?: string;
+    newPassword?: string;
+  }): Observable<UserAccessData | ErrorResponse> {
+    return this.http
+      .post<void>(`${this._baseUrl}/reset`, value)
+      .pipe(catchError((e) => of(e.error)));
+  }
+
   private setupCurrentUser(userWithToken: UserAccessData): void {
     // store user details and jwt token in local storage to keep user logged in between page refreshes
     this.localStorageService.set(CURRENT_USER_KEY, userWithToken);

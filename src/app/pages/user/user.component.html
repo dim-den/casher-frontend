@@ -1,202 +1,101 @@
-<div class="row">
-  <div class="col-md-4">
-    <div class="card card-user">
-      <div class="image">
-        <img src="assets/img/damir-bosnjak.jpg" alt="...">
-      </div>
-      <div class="card-body">
-        <div class="author">
-          <a href="#">
-            <img class="avatar border-gray" src="assets/img/mike.jpg" alt="...">
-            <h5 class="title">Chet Faker</h5>
-          </a>
-          <p class="description">
-            @chetfaker
-          </p>
+<div class='row' fxLayout='row' fxLayoutGap='20px' >
+  <div class='card card-user col-md-5' *ngIf='authService.currentUser$ | async as user' >
+    <div class='card-header'>
+      <h5 class='card-title'>Profile Info</h5>
+    </div>
+    <div class='card-body'>
+      <form>
+        <div class='row'>
+          <div class='col-md-20 pr-1' style='margin-bottom: 10px;'>
+            <span style='font-size: 16px'>You with us since <i>{{profileFg.controls.registrationDate.value | date}}</i></span>
+          </div>
         </div>
-        <p class="description text-center">
-          "I like the way you work it
-          <br> No diggity
-          <br> I wanna bag it up"
-        </p>
-      </div>
-      <div class="card-footer">
-        <hr>
-        <div class="button-container">
-          <div class="row">
-            <div class="col-lg-3 col-md-6 col-6 ml-auto">
-              <h5>12
-                <br>
-                <small>Files</small>
-              </h5>
+
+        <div class='row'>
+          <div class='col-md-20 pr-1' style='margin: 10px 0;'>
+            <span style='font-size: 16px'>Total transactions: <i>{{profileFg.controls.totalTransactions.value}}</i></span>
+          </div>
+        </div>
+
+        <div class='row'>
+          <div class='col-md-6 pr-1'>
+            <div class='form-group'>
+              <label>Email</label>
+              <input type='text' class='form-control' placeholder='email'
+                [formControl]='profileFg.controls.email'>
             </div>
-            <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
-              <h5>2GB
-                <br>
-                <small>Used</small>
-              </h5>
+          </div>
+          <div class='col-md-6 pl-1' fxLayoutAlign='center center'>
+            <button class='btn btn-outline-primary' *ngIf='!profileFg.controls.emailConfirmed.value'>Confirm Email</button>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-6 pr-1'>
+            <div class='form-group'>
+              <label>First Name</label>
+              <input type='text' class='form-control' placeholder='first name' [formControl]='profileFg.controls.firstName'>
             </div>
-            <div class="col-lg-3 mr-auto">
-              <h5>24,6$
-                <br>
-                <small>Spent</small>
-              </h5>
+          </div>
+          <div class='col-md-6 pl-1'>
+            <div class='form-group'>
+              <label>Last Name</label>
+              <input type='text' class='form-control' placeholder='Last Name' [formControl]='profileFg.controls.lastName'>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">Team Members</h4>
-      </div>
-      <div class="card-body">
-        <ul class="list-unstyled team-members">
-          <li>
-            <div class="row">
-              <div class="col-md-2 col-2">
-                <div class="avatar">
-                  <img src="assets/img/faces/ayo-ogunseinde-2.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                </div>
-              </div>
-              <div class="col-md-7 col-7">
-                DJ Khaled
-                <br />
-                <span class="text-muted">
-                  <small>Offline</small>
-                </span>
-              </div>
-              <div class="col-md-3 col-3 text-right">
-                <button class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="fa fa-envelope"></i></button>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="row">
-              <div class="col-md-2 col-2">
-                <div class="avatar">
-                  <img src="assets/img/faces/joe-gardner-2.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                </div>
-              </div>
-              <div class="col-md-7 col-7">
-                Creative Tim
-                <br />
-                <span class="text-success">
-                  <small>Available</small>
-                </span>
-              </div>
-              <div class="col-md-3 col-3 text-right">
-                <button class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="fa fa-envelope"></i></button>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class="row">
-              <div class="col-md-2 col-2">
-                <div class="avatar">
-                  <img src="assets/img/faces/clem-onojeghuo-2.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                </div>
-              </div>
-              <div class="col-ms-7 col-7">
-                Flume
-                <br />
-                <span class="text-danger">
-                  <small>Busy</small>
-                </span>
-              </div>
-              <div class="col-md-3 col-3 text-right">
-                <button class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="fa fa-envelope"></i></button>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+
+      </form>
     </div>
   </div>
-  <div class="col-md-8">
-    <div class="card card-user">
-      <div class="card-header">
-        <h5 class="card-title">Edit Profile</h5>
-      </div>
-      <div class="card-body">
-        <form>
-          <div class="row">
-            <div class="col-md-5 pr-1">
-              <div class="form-group">
-                <label>Company (disabled)</label>
-                <input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc.">
-              </div>
-            </div>
-            <div class="col-md-3 px-1">
-              <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control" placeholder="Username" value="michael23">
-              </div>
-            </div>
-            <div class="col-md-4 pl-1">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" placeholder="Email">
-              </div>
+
+  <div class='card card-user col-md-5'>
+    <div class='card-header'>
+      <h5 class='card-title'>Change Password</h5>
+    </div>
+    <div class='card-body'>
+      <form>
+        <div class='row'>
+          <div class='col-md-6 pr-1'>
+            <div class='form-group'>
+              <label>Current password</label>
+              <input type='password' class='form-control' placeholder='current password'
+                     [formControl]='changePasswordForm.controls.password'
+                     [class.is-invalid]='changePasswordForm.controls.password.touched && changePasswordForm.controls.password.invalid'>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control" placeholder="Company" value="Chet">
-              </div>
-            </div>
-            <div class="col-md-6 pl-1">
-              <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control" placeholder="Last Name" value="Faker">
-              </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-6 pr-1'>
+            <div class='form-group'>
+              <label>New Password</label>
+              <input type='password' class='form-control' placeholder='new password'
+                     [formControl]='changePasswordForm.controls.newPassword'
+                     [class.is-invalid]='changePasswordForm.controls.newPassword.touched && changePasswordForm.controls.newPassword.invalid'>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Address</label>
-                <input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia">
-              </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-6 pr-1'>
+            <div class='form-group'>
+              <label>Confirm New Password</label>
+              <input type='password' class='form-control' placeholder='confirm new password'
+                [formControl]='changePasswordForm.controls.confirmNewPassword'
+                     [class.is-invalid]='changePasswordForm.controls.confirmNewPassword.touched && changePasswordForm.controls.confirmNewPassword.invalid'>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4 pr-1">
-              <div class="form-group">
-                <label>City</label>
-                <input type="text" class="form-control" placeholder="City" value="Melbourne">
-              </div>
-            </div>
-            <div class="col-md-4 px-1">
-              <div class="form-group">
-                <label>Country</label>
-                <input type="text" class="form-control" placeholder="Country" value="Australia">
-              </div>
-            </div>
-            <div class="col-md-4 pl-1">
-              <div class="form-group">
-                <label>Postal Code</label>
-                <input type="number" class="form-control" placeholder="ZIP Code">
-              </div>
-            </div>
+        </div>
+        <div class='row' *ngIf='changePasswordErrorMsg'>
+            <span style='color: var(--bs-red)'>{{changePasswordErrorMsg}}</span>
+        </div>
+        <div class='row'>
+          <div class='update ml-auto mr-auto'>
+            <button type='submit' class='btn btn-primary btn-round' [disabled]='changePasswordErrorMsg || changePasswordForm.invalid || changePasswordForm.untouched'
+                (click)='resetPassword()'>
+              Change Password
+            </button>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>About Me</label>
-                <textarea class="form-control textarea">Oh so, your weak rhyme You doubt I'll bother, reading into it</textarea>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary btn-round">Update Profile</button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

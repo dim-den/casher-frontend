@@ -54,8 +54,11 @@
             <div *ngFor='let n of notificationService.unreadNotifications$ | async' ngbDropdownItem
               class='notification-item'>
               <div fxLayout='row'>
-                <div fxFlex>
-                  <span><b>{{n.Title}}</b></span> <br/>
+                <div fxFlex >
+                  <div fxLayoutAlign='space-between center' fxLayout='row'>
+                    <span><b>{{n.Title}}</b></span>
+                    <span style='margin-right: 10px'> {{n.InsertDt | date}}</span>
+                  </div>
                   <div>{{n.Message}}</div>
                 </div>
 
