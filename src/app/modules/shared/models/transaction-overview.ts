@@ -6,4 +6,5 @@ export interface TransactionOverview extends BaseModel {
   amount: number;
   date: Date;
   category: CategoryInfo;
+  isRegular: boolean;
 }

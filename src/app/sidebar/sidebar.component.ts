@@ -53,7 +53,7 @@ export const ROUTES: RouteInfo[] = [
     icon: 'nc-zoom-split',
     class: '',
   },
-  { path: '/user', title: 'User Profile', icon: 'nc-single-02', class: '' },
+  { path: '/user', title: 'Profile', icon: 'nc-single-02', class: '' },
 ];
 
 @Component({

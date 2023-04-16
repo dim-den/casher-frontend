@@ -51,9 +51,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.notificationService.showError(msg ?? 'Error occured');
         }
     }
-    if (err.status === 404) {
-      this.goToNotFound(msg);
-    }
 
     return throwError(() => err);
   }
@@ -71,9 +68,5 @@ export class ErrorInterceptor implements HttpInterceptor {
     const msg = JSON.parse(error)?.Error as string;
 
     this.notificationService.showError(msg ?? 'Error occurred');
-  }
-
-  private goToNotFound(msg: string): void {
-    void this.router.navigateByUrl('404', { state: { errorMessage: msg } });
   }
 }

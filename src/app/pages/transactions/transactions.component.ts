@@ -226,6 +226,7 @@ export class TransactionsComponent {
   editTransaction(transaction: TransactionOverview) {
     const modalRef = this.modalService.open(NewTransactionPopupComponent, {
       centered: true,
+      size: 'lg',
     });
 
     modalRef.componentInstance.data = transaction;

@@ -113,6 +113,13 @@ export class NewTransactionPopupComponent implements AfterViewInit {
       });
     });
 
+    this.form.controls.amount.valueChanges.subscribe((x) => {
+      x !== null &&
+        this.form.controls.amount.patchValue(Math.round(x * 100) / 100, {
+          emitEvent: false,
+        });
+    });
+
     this.form.controls.isRegular.valueChanges.subscribe((x) => {
       if (x) {
         this.form.controls.periodicityType.patchValue(EPeriodicityType.Monthly);
@@ -126,6 +133,13 @@ export class NewTransactionPopupComponent implements AfterViewInit {
     }
   }
 
+  stopRegular() {
+    this.regularTransactionService.delete(this.data.id).subscribe(() => {
+      this.notifyService.showInfo('Successfully stopped regular transaction');
+      this.form.controls.isRegular.patchValue(false);
+    });
+  }
+
   get editMode(): boolean {
     return !!this.data;
   }
@@ -133,6 +147,7 @@ export class NewTransactionPopupComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.data) {
       this.form.patchValue(this.data);
+      this.form.controls.isRegular.disable();
       const date = DateTime.moment(this.data.date).toDate();
 
       this.form.controls.type.patchValue(this.data.category.type);

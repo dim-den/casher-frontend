@@ -68,6 +68,13 @@ export class NewWalletPopupComponent implements AfterViewInit {
       ]),
       isDefault: new FormControl(false),
     });
+
+    this.form.controls.balance.valueChanges.subscribe((x) => {
+      x !== null &&
+        this.form.controls.balance.patchValue(Math.round(x * 100) / 100, {
+          emitEvent: false,
+        });
+    });
   }
 
   save() {
