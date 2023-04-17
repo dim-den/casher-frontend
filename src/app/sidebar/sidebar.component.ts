@@ -29,11 +29,28 @@ export const ROUTES: RouteInfo[] = [
     icon: '',
   },
   {
+    path: '/auth/recovery',
+    title: 'Recovery',
+    class: '',
+    noAuth: true,
+    hidden: true,
+    icon: '',
+  },
+  {
+    path: '/auth/reset',
+    title: 'Reset',
+    class: '',
+    noAuth: true,
+    hidden: true,
+    icon: '',
+  },
+  {
     path: '/welcome',
     title: 'Welcome',
     icon: 'nc-bank',
     class: '',
     noAuth: true,
+    hidden: true,
   },
   {
     path: '/wallets',

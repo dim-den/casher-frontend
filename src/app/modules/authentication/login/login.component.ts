@@ -45,6 +45,10 @@ export class LoginComponent implements OnInit {
     void this.router.navigate(['auth', 'register']);
   }
 
+  navigateToRecovery() {
+    void this.router.navigate(['auth', 'recovery']);
+  }
+
   ngOnInit(): void {
     if (this.authService.isAuthorized) {
       //this.navigateReturnUrl();

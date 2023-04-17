@@ -82,7 +82,7 @@ export class UserComponent implements OnInit {
 
   resetPassword() {
     const value = this.changePasswordForm.value;
-    this.authService.resetPassword(value).subscribe((x) => {
+    this.authService.changePassword(value).subscribe((x) => {
       if (x && 'Error' in x) {
         this.changePasswordErrorMsg = x.Error;
 
@@ -93,6 +93,15 @@ export class UserComponent implements OnInit {
         this.changePasswordForm.reset();
         this.notificationService.showSuccess('Successfully changed password');
       }
+    });
+  }
+
+  disableConfirmEmail = false;
+
+  sendConfirmEmail() {
+    this.authService.sendConfirmEmail().subscribe(() => {
+      this.disableConfirmEmail = true;
+      this.notificationService.showInfo('Confirmation email was send');
     });
   }
   ngOnInit() {}

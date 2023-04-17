@@ -61,9 +61,27 @@ export class AuthenticationService {
       );
   }
 
-  public resetPassword(value: {
+  public changePassword(value: {
     password?: string;
     newPassword?: string;
+  }): Observable<UserAccessData | ErrorResponse> {
+    return this.http
+      .post<void>(`${this._baseUrl}/change`, value)
+      .pipe(catchError((e) => of(e.error)));
+  }
+
+  public sendConfirmEmail(): Observable<void> {
+    return this.http.post<void>(`${this._baseUrl}/send/confirm`, {});
+  }
+
+  public sendResetPasswordEmail(value: { email: string }): Observable<void> {
+    return this.http.post<void>(`${this._baseUrl}/send/reset`, value);
+  }
+
+  public resetPassword(value: {
+    password?: string;
+    confirmPassword?: string;
+    code?: string;
   }): Observable<UserAccessData | ErrorResponse> {
     return this.http
       .post<void>(`${this._baseUrl}/reset`, value)

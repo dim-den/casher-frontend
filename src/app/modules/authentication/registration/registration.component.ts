@@ -102,6 +102,13 @@ export class RegistrationComponent implements OnInit {
       ]),
     });
 
+    this.form.controls.walletBalance.valueChanges.subscribe((x) => {
+      x !== null &&
+        this.form.controls.walletBalance.patchValue(Math.round(x * 100) / 100, {
+          emitEvent: false,
+        });
+    });
+
     combineLatest(
       this.form.controls.confirmPassword.valueChanges,
       this.form.controls.password.valueChanges

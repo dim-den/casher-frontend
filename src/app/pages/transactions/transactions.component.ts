@@ -15,6 +15,8 @@ import {
   TransactionsByCategory,
 } from '../../modules/shared/models/transactions-by-category';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../modules/core/services';
 
 export interface NgDate {
   day: number;
@@ -47,8 +49,11 @@ export class TransactionsComponent {
   constructor(
     private walletService: WalletService,
     private transactionService: TransactionService,
+    private notificationService: NotificationService,
+    private authService: AuthenticationService,
     public modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     let wait = of<any>(null);
     if (!this.walletService.selectedWallet$.value) {
@@ -94,7 +99,7 @@ export class TransactionsComponent {
             true
           );
 
-          if (diff > 0 || diff < -12) {
+          if (diff > 0 || diff < -60) {
             this.transactionChatForm.controls.start.setErrors({});
           } else {
             this.transactionChatForm.controls.start.setErrors(null);
@@ -118,7 +123,7 @@ export class TransactionsComponent {
             true
           );
 
-          if (diff > 0 || diff < -12) {
+          if (diff > 0 || diff < -60) {
             this.transactionChatForm.controls.end.setErrors({});
           } else {
             this.transactionChatForm.controls.end.setErrors(null);
@@ -141,7 +146,9 @@ export class TransactionsComponent {
           .subscribe((x) => {
             const groupedByDay = x.reduce((accumulator, currentValue) => {
               const date = new Date(currentValue.date);
-              const key = `${date.getDate()}/${date.getMonth() + 1}`;
+              const key = `${date.getDate()}/${
+                date.getMonth() + 1
+              }/${date.getFullYear()}`;
               if (!accumulator[key]) {
                 accumulator[key] = [];
               }
@@ -159,6 +166,19 @@ export class TransactionsComponent {
               this.getDateFromNgDate(value.end)
             );
           });
+
+        this.transactionService
+          .getCategoryStat(
+            this.walletService.selectedWallet$.value.id,
+            this.getDateFromNgDate(value.start),
+            this.getDateFromNgDate(value.end)
+          )
+          .pipe(untilDestroyed(this))
+          .subscribe((x) => {
+            this.categoryData = x;
+            this.drawCategoryData('expensesCategory', x.expenses);
+            this.drawCategoryData('incomesCategory', x.incomes);
+          });
       });
   }
 
@@ -167,10 +187,22 @@ export class TransactionsComponent {
   }
 
   getTransactionsForSelectedDate() {
+    const walletId = this.walletService.selectedWallet$.value?.id;
+    if (!walletId) {
+      setTimeout(() => {
+        if (this.authService.isAuthorized) {
+          void this.router.navigate(['wallets']);
+          this.notificationService.showError('Select or create wallet first');
+        }
+      }, 550);
+
+      return;
+    }
+
     const s = DateTime.moment(this.selectedDate).startOf('month').toDate();
     const e = DateTime.moment(this.selectedDate).endOf('month').toDate();
     this.transactionService
-      .getCategoryStat(this.walletService.selectedWallet$.value.id, s, e)
+      .getCategoryStat(walletId, s, e)
       .pipe(untilDestroyed(this))
       .subscribe((x) => {
         this.categoryData = x;
@@ -178,30 +210,30 @@ export class TransactionsComponent {
         this.drawCategoryData('incomesCategory', x.incomes);
       });
 
-    this.transactionService
-      .getTransactions(this.walletService.selectedWallet$.value.id, s, e)
-      .subscribe((x) => {
-        this.transactions = x;
+    this.transactionService.getTransactions(walletId, s, e).subscribe((x) => {
+      this.transactions = x;
 
-        const groupedByDay = x.reduce((accumulator, currentValue) => {
-          const date = new Date(currentValue.date);
-          const key = `${date.getDate()}/${date.getMonth() + 1}`;
+      const groupedByDay = x.reduce((accumulator, currentValue) => {
+        const date = new Date(currentValue.date);
+        const key = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
 
-          if (!accumulator[key]) {
-            accumulator[key] = [];
-          }
+        if (!accumulator[key]) {
+          accumulator[key] = [];
+        }
 
-          accumulator[key].push(currentValue);
+        accumulator[key].push(currentValue);
 
-          return accumulator;
-        }, {});
+        return accumulator;
+      }, {});
 
-        this.transactionGroupedByDay = Object.entries(groupedByDay).map(
-          ([day, transactions]) => ({ key: day, value: transactions })
-        );
+      this.transactionGroupedByDay = Object.entries(groupedByDay).map(
+        ([day, transactions]) => ({ key: day, value: transactions })
+      );
 
-        this.drawData(this.transactionGroupedByDay, s, e);
-      });
+      this.drawData(this.transactionGroupedByDay, s, e);
+    });
   }
 
   getSum(transaction: TransactionOverview[]): number {
@@ -279,7 +311,11 @@ export class TransactionsComponent {
     const expenses = [];
     range.forEach((date) => {
       const dateExpenses = data
-        .filter((y) => y.key === `${date.getDate()}/${date.getMonth() + 1}`)
+        .filter(
+          (y) =>
+            y.key ===
+            `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        )
         .flatMap((x) => x.value)
         .filter((x) => x.category?.type === ETransactionType.Expense);
 
@@ -290,7 +326,11 @@ export class TransactionsComponent {
     const incomes = [];
     range.forEach((date) => {
       const dateIncome = data
-        .filter((y) => y.key === `${date.getDate()}/${date.getMonth() + 1}`)
+        .filter(
+          (y) =>
+            y.key ===
+            `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        )
         .flatMap((x) => x.value)
         .filter((x) => x.category?.type === ETransactionType.Income);
       const value = dateIncome?.length > 0 ? this.getSum(dateIncome) : 0;

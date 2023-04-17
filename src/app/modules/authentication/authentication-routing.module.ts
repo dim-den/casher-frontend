@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { RegistrationComponent } from './registration/registration.component';
+import { ResetPasswordEmailComponent } from './reset-password-email/reset-password-email.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Route[] = [
   {
@@ -12,6 +14,14 @@ const routes: Route[] = [
   {
     path: 'register',
     component: RegistrationComponent,
+  },
+  {
+    path: 'recovery',
+    component: ResetPasswordEmailComponent,
+  },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent,
   },
 ];
 
