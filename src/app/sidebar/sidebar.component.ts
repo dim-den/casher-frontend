@@ -50,7 +50,6 @@ export const ROUTES: RouteInfo[] = [
     icon: 'nc-bank',
     class: '',
     noAuth: true,
-    hidden: true,
   },
   {
     path: '/wallets',

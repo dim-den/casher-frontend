@@ -20,6 +20,7 @@ import {
 import { Credential } from '../../shared/models/credential';
 import { Registration } from '../../shared/models/registration';
 import { ErrorResponse } from '../../shared/models/error-response';
+import { NotificationService } from '../../core/services/notification.service';
 
 export interface RegisterFg {
   firstname: FormControl<string>;
@@ -58,7 +59,7 @@ export class RegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private router: Router,
-    private route: ActivatedRoute
+    private notifactionService: NotificationService
   ) {}
   register() {
     const value = this.form.value as Registration;
@@ -73,6 +74,7 @@ export class RegistrationComponent implements OnInit {
             .pipe(take(1))
             .subscribe(() => (this.errorMsg = null));
         } else {
+          this.notifactionService.showSuccess('Enjoy using app :)');
           void this.router.navigate(['wallets']);
         }
       });

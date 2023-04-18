@@ -78,6 +78,10 @@ export class AuthenticationService {
     return this.http.post<void>(`${this._baseUrl}/send/reset`, value);
   }
 
+  public confirmEmail(code: string): Observable<void> {
+    return this.http.post<void>(`${this._baseUrl}/confirm`, { code });
+  }
+
   public resetPassword(value: {
     password?: string;
     confirmPassword?: string;

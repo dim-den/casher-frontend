@@ -10,6 +10,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime, take } from 'rxjs';
 import { NotificationService } from '../../modules/core/services/notification.service';
 import { UserService } from '../../modules/core/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 export interface ChangePasswordFg {
   password: FormControl<string>;
@@ -42,7 +43,8 @@ export class UserComponent implements OnInit {
     public authService: AuthenticationService,
     private fb: FormBuilder,
     private userService: UserService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private route: ActivatedRoute
   ) {
     this.profileFg = this.fb.group<ProfileFg>({
       firstName: this.fb.control(null),
@@ -62,6 +64,17 @@ export class UserComponent implements OnInit {
 
     this.userService.getInfo().subscribe((x) => {
       this.profileFg.patchValue(x);
+
+      this.route.queryParams.pipe(untilDestroyed(this)).subscribe((params) => {
+        if (params.code && !this.profileFg.controls.emailConfirmed.value) {
+          this.authService.confirmEmail(params.code).subscribe(() => {
+            this.profileFg.controls.emailConfirmed.patchValue(true);
+            this.notificationService.showSuccess(
+              'Successfully confirmed email!'
+            );
+          });
+        }
+      });
     });
 
     this.changePasswordForm.valueChanges
