@@ -1,0 +1,69 @@
+<div class='modal-header'>
+  <h4 class='modal-title'>{{ 'Create Limitation'}}</h4>
+  <button type='button' class='btn-close' aria-label='Close' (click)='close()'></button>
+</div>
+<div class='modal-body'>
+  <div class='form-group'>
+    <label>Amount</label>
+    <input type='text' class='form-control' placeholder='description' [formControl]='form.controls.amount'
+           [class.is-invalid]='form.controls.amount.touched && form.controls.amount.invalid'>
+
+  </div>
+
+
+  <div fxLayout='row' fxLayoutAlign='start center'>
+    <div class='form-group' fxFlex='250px'>
+      <label>Choose limited category</label>
+      <div class='d-inline-block' ngbDropdown #myDrop='ngbDropdown'>
+        <button
+          fxFlex='200px'
+          type='button'
+          class='btn btn-outline-primary'
+          id='dropdownManual'
+          ngbDropdownAnchor
+          (focus)='myDrop.open()'
+        >
+          {{ form.controls.categoryName.value }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby='dropdownManual' class='dropdown-menu dropdown-menu-right category-scroll'>
+          <button class='dropdown-item' *ngFor='let c of categories' type='button'
+                  (click)='form.controls.categoryId.setValue(c?.id);form.controls.categoryName.setValue(c?.name ?? "All categories")'>
+            {{ c?.name ?? 'All categories' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div fxLayout='row' fxLayoutAlign='start center'>
+    <div class='form-group' fxFlex='250px'>
+      <label>Setup limit for wallet</label>
+      <div class='d-inline-block' ngbDropdown #dd='ngbDropdown'>
+        <button
+          fxFlex='200px'
+          type='button'
+          class='btn btn-outline-primary'
+          id='dd'
+          ngbDropdownAnchor
+          (focus)='dd.open()'
+        >
+          {{ form.controls.walletName.value }}
+        </button>
+        <div ngbDropdownMenu aria-labelledby='dd' class='dropdown-menu dropdown-menu-right category-scroll'>
+          <button class='dropdown-item' *ngFor='let c of walletsData' type='button'
+                  (click)='form.controls.walletId.setValue(c?.id);form.controls.walletName.setValue(c?.name ? c.name : "All wallets")'>
+            {{ c?.name ? c.name : 'All wallets' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class='modal-footer' fxLayoutGap='10px'>
+    <button type='button' class='btn btn-outline-info' (click)='close()'>Cancel</button>
+
+
+    <button type='button' class='btn btn-outline-success' [disabled]='form.invalid || form.untouched' (click)='save()'>{{ 'Save'}}</button>
+  </div>
+</div>

@@ -11,6 +11,7 @@ import { ConfirmPopupComponent } from './components/confirm-popup/confirm-popup.
 import { NewTransactionPopupComponent } from './components/new-transaction-popup/new-transaction-popup.component';
 import { ValueSignLightningTsPipe } from './pipes/value-sign-lightning.ts.pipe';
 import { NgbSortableColumnDirective } from './directives/ngb-sortable-column.directive';
+import { NewLimitationPopupComponent } from './components/new-limitation-popup/new-limitation-popup.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NgbSortableColumnDirective } from './directives/ngb-sortable-column.dir
     NewTransactionPopupComponent,
     ValueSignLightningTsPipe,
     NgbSortableColumnDirective,
+    NewLimitationPopupComponent,
   ],
   imports: [
     CommonModule,

@@ -1,102 +1,149 @@
-<div class='row' fxLayout='row' fxLayoutGap='20px' >
-  <div class='card card-user col-md-5' *ngIf='authService.currentUser$ | async as user' >
-    <div class='card-header'>
-      <h5 class='card-title'>Profile Info</h5>
+<div fxLayout='column'>
+  <div class='row' fxLayout='row' fxLayoutGap='20px'>
+    <div class='card card-user col-md-5' *ngIf='authService.currentUser$ | async as user'>
+      <div class='card-header'>
+        <h5 class='card-title'>Profile Info</h5>
+      </div>
+      <div class='card-body'>
+        <form>
+          <div class='row'>
+            <div class='col-md-20 pr-1' style='margin-bottom: 10px;'>
+              <span
+                style='font-size: 16px'>You with us since <i>{{profileFg.controls.registrationDate.value | date}}</i></span>
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class='col-md-20 pr-1' style='margin: 10px 0;'>
+              <span
+                style='font-size: 16px'>Total transactions: <i>{{profileFg.controls.totalTransactions.value}}</i></span>
+            </div>
+          </div>
+
+          <div class='row'>
+            <div class='col-md-6 pr-1'>
+              <div class='form-group'>
+                <label>Email</label>
+                <input type='text' class='form-control' placeholder='email'
+                       [formControl]='profileFg.controls.email'>
+              </div>
+            </div>
+            <div class='col-md-6 pl-1' fxLayoutAlign='center center'>
+              <button class='btn btn-outline-primary' *ngIf='!profileFg.controls.emailConfirmed.value'
+                      (click)='sendConfirmEmail()'
+                      [disabled]='disableConfirmEmail'>Confirm Email
+              </button>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-md-6 pr-1'>
+              <div class='form-group'>
+                <label>First Name</label>
+                <input type='text' class='form-control' placeholder='first name'
+                       [formControl]='profileFg.controls.firstName'>
+              </div>
+            </div>
+            <div class='col-md-6 pl-1'>
+              <div class='form-group'>
+                <label>Last Name</label>
+                <input type='text' class='form-control' placeholder='Last Name'
+                       [formControl]='profileFg.controls.lastName'>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
-    <div class='card-body'>
-      <form>
-        <div class='row'>
-          <div class='col-md-20 pr-1' style='margin-bottom: 10px;'>
-            <span style='font-size: 16px'>You with us since <i>{{profileFg.controls.registrationDate.value | date}}</i></span>
-          </div>
-        </div>
 
-        <div class='row'>
-          <div class='col-md-20 pr-1' style='margin: 10px 0;'>
-            <span style='font-size: 16px'>Total transactions: <i>{{profileFg.controls.totalTransactions.value}}</i></span>
-          </div>
-        </div>
-
-        <div class='row'>
-          <div class='col-md-6 pr-1'>
-            <div class='form-group'>
-              <label>Email</label>
-              <input type='text' class='form-control' placeholder='email'
-                [formControl]='profileFg.controls.email'>
+    <div class='card card-user col-md-5'>
+      <div class='card-header'>
+        <h5 class='card-title'>Change Password</h5>
+      </div>
+      <div class='card-body'>
+        <form>
+          <div class='row'>
+            <div class='col-md-6 pr-1'>
+              <div class='form-group'>
+                <label>Current password</label>
+                <input type='password' class='form-control' placeholder='current password'
+                       [formControl]='changePasswordForm.controls.password'
+                       [class.is-invalid]='changePasswordForm.controls.password.touched && changePasswordForm.controls.password.invalid'>
+              </div>
             </div>
           </div>
-          <div class='col-md-6 pl-1' fxLayoutAlign='center center'>
-            <button class='btn btn-outline-primary' *ngIf='!profileFg.controls.emailConfirmed.value' (click)='sendConfirmEmail()'
-                [disabled]='disableConfirmEmail'>Confirm Email</button>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col-md-6 pr-1'>
-            <div class='form-group'>
-              <label>First Name</label>
-              <input type='text' class='form-control' placeholder='first name' [formControl]='profileFg.controls.firstName'>
+          <div class='row'>
+            <div class='col-md-6 pr-1'>
+              <div class='form-group'>
+                <label>New Password</label>
+                <input type='password' class='form-control' placeholder='new password'
+                       [formControl]='changePasswordForm.controls.newPassword'
+                       [class.is-invalid]='changePasswordForm.controls.newPassword.touched && changePasswordForm.controls.newPassword.invalid'>
+              </div>
             </div>
           </div>
-          <div class='col-md-6 pl-1'>
-            <div class='form-group'>
-              <label>Last Name</label>
-              <input type='text' class='form-control' placeholder='Last Name' [formControl]='profileFg.controls.lastName'>
+          <div class='row'>
+            <div class='col-md-6 pr-1'>
+              <div class='form-group'>
+                <label>Confirm New Password</label>
+                <input type='password' class='form-control' placeholder='confirm new password'
+                       [formControl]='changePasswordForm.controls.confirmNewPassword'
+                       [class.is-invalid]='changePasswordForm.controls.confirmNewPassword.touched && changePasswordForm.controls.confirmNewPassword.invalid'>
+              </div>
             </div>
           </div>
-        </div>
-
-      </form>
+          <div class='row' *ngIf='changePasswordErrorMsg'>
+            <span style='color: var(--bs-red)'>{{changePasswordErrorMsg}}</span>
+          </div>
+          <div class='row'>
+            <div class='update ml-auto mr-auto'>
+              <button type='submit' class='btn btn-primary btn-round'
+                      [disabled]='changePasswordErrorMsg || changePasswordForm.invalid || changePasswordForm.untouched'
+                      (click)='resetPassword()'>
+                Change Password
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <div class='card card-user col-md-5'>
-    <div class='card-header'>
-      <h5 class='card-title'>Change Password</h5>
-    </div>
-    <div class='card-body'>
-      <form>
+  <div class='row'>
+    <div class='card card-user col-md-10' *ngIf='authService.currentUser$ | async as user'>
+      <div class='card-header'>
+        <h5 class='card-title'>Limitations</h5>
+        <p class='card-category'>Setup your limitations for month to control your spends</p>
+
+      </div>
+      <div class='card-body'>
         <div class='row'>
-          <div class='col-md-6 pr-1'>
-            <div class='form-group'>
-              <label>Current password</label>
-              <input type='password' class='form-control' placeholder='current password'
-                     [formControl]='changePasswordForm.controls.password'
-                     [class.is-invalid]='changePasswordForm.controls.password.touched && changePasswordForm.controls.password.invalid'>
+          <div class='col-lg-4 col-md-6 col-sm-6' *ngFor='let w of userLimitations'>
+            <div class='card card-stats'>
+              <div class='card-body' style='min-height: 100px'>
+                <div class='row'>
+                  <div>
+                      <p class='card-title' style='font-size: 18px'>Wallet: <b>{{w.wallet.name}}</b></p>
+                      <p class='card-category'>Limitation by category: <b>{{ !w.category ? 'All' : w.category.name }}</b>
+                      <p class='card-category'>Limitation amount/spend: <span style='font-size: 16px; font-weight: bold;'>{{ w.amount }} / {{w.currentMonthSpent}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class='card-footer '>
+                <hr>
+                <div fxLayout='row' fxLayoutAlign='space-between center'>
+                  <button class='btn btn-sm btn-outline-danger' (click)='deleteLimitation(w.id)'>Delete</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class='row'>
-          <div class='col-md-6 pr-1'>
-            <div class='form-group'>
-              <label>New Password</label>
-              <input type='password' class='form-control' placeholder='new password'
-                     [formControl]='changePasswordForm.controls.newPassword'
-                     [class.is-invalid]='changePasswordForm.controls.newPassword.touched && changePasswordForm.controls.newPassword.invalid'>
-            </div>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col-md-6 pr-1'>
-            <div class='form-group'>
-              <label>Confirm New Password</label>
-              <input type='password' class='form-control' placeholder='confirm new password'
-                [formControl]='changePasswordForm.controls.confirmNewPassword'
-                     [class.is-invalid]='changePasswordForm.controls.confirmNewPassword.touched && changePasswordForm.controls.confirmNewPassword.invalid'>
-            </div>
-          </div>
-        </div>
-        <div class='row' *ngIf='changePasswordErrorMsg'>
-            <span style='color: var(--bs-red)'>{{changePasswordErrorMsg}}</span>
-        </div>
-        <div class='row'>
-          <div class='update ml-auto mr-auto'>
-            <button type='submit' class='btn btn-primary btn-round' [disabled]='changePasswordErrorMsg || changePasswordForm.invalid || changePasswordForm.untouched'
-                (click)='resetPassword()'>
-              Change Password
-            </button>
-          </div>
-        </div>
-      </form>
+        <button class='btn btn-primary btn-sm create-btn' (click)='createUserLimitation()' [disabled]='!(walletsService.selectedWallet$ | async)'>
+          Create New Limitation
+        </button>
+
+      </div>
     </div>
   </div>
 </div>

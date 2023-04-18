@@ -11,6 +11,12 @@ import { debounceTime, take } from 'rxjs';
 import { NotificationService } from '../../modules/core/services/notification.service';
 import { UserService } from '../../modules/core/services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { WalletLimitationOverview } from '../../modules/shared/models/wallet-limitation-overview';
+import { WalletLimitationService } from '../../modules/core/services/wallet-limitation.service';
+import { NewWalletPopupComponent } from '../../modules/shared/components/new-wallet-popup/new-wallet-popup.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewLimitationPopupComponent } from '../../modules/shared/components/new-limitation-popup/new-limitation-popup.component';
+import { WalletService } from '../../modules/core/services/wallet.service';
 
 export interface ChangePasswordFg {
   password: FormControl<string>;
@@ -39,12 +45,16 @@ export class UserComponent implements OnInit {
   profileFg: FormGroup<ProfileFg>;
 
   changePasswordErrorMsg = '';
+  userLimitations: WalletLimitationOverview[] = [];
   constructor(
     public authService: AuthenticationService,
     private fb: FormBuilder,
     private userService: UserService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private walletLimitationService: WalletLimitationService,
+    public modalService: NgbModal,
+    public walletsService: WalletService
   ) {
     this.profileFg = this.fb.group<ProfileFg>({
       firstName: this.fb.control(null),
@@ -76,6 +86,8 @@ export class UserComponent implements OnInit {
         }
       });
     });
+
+    this.loadUserLimitations();
 
     this.changePasswordForm.valueChanges
       .pipe(untilDestroyed(this), debounceTime(200))
@@ -115,6 +127,29 @@ export class UserComponent implements OnInit {
     this.authService.sendConfirmEmail().subscribe(() => {
       this.disableConfirmEmail = true;
       this.notificationService.showInfo('Confirmation email was send');
+    });
+  }
+
+  loadUserLimitations() {
+    this.walletLimitationService
+      .getUserLimitation()
+      .subscribe((x) => (this.userLimitations = x));
+  }
+
+  deleteLimitation(id: number) {
+    this.walletLimitationService.delete(id).subscribe(() => {
+      this.loadUserLimitations();
+      this.notificationService.showInfo('Deleted limitation');
+    });
+  }
+
+  createUserLimitation() {
+    const modalRef = this.modalService.open(NewLimitationPopupComponent, {
+      centered: true,
+    });
+
+    modalRef.componentInstance.confirmed.subscribe(() => {
+      this.loadUserLimitations();
     });
   }
   ngOnInit() {}
