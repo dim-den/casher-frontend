@@ -45,9 +45,9 @@ export class NewLimitationPopupComponent {
     private walletLimitationService: WalletLimitationService
   ) {
     this.form = this.fb.group<NewLimitationFg>({
-      amount: new FormControl<number>(0, [
+      amount: new FormControl<number>(1, [
         Validators.required,
-        Validators.min(0),
+        Validators.min(1),
       ]),
       walletId: new FormControl<number>(null),
       categoryId: new FormControl<number>(null),
