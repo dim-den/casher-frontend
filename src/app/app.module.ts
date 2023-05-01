@@ -4,13 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutes, AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AppLayoutComponent } from './layouts/admin-layout/app-layout.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { SidebarModule } from './sidebar/sidebar.module';
+import { SidebarModule } from './shared/sidebar/sidebar.module';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { FooterModule } from './shared/footer/footer.module';
-import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
 import { ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './modules/core/core.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,7 +24,7 @@ import { SearchComponent } from './pages/search/search.component';
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    AppLayoutComponent,
     WelcomeComponent,
     WalletsComponent,
     TransactionsComponent,
@@ -45,7 +44,6 @@ import { SearchComponent } from './pages/search/search.component';
     NavbarModule,
     ToastrModule.forRoot(),
     FooterModule,
-    FixedPluginModule,
     CoreModule,
     SharedModule,
   ],

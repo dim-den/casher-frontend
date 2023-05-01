@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AppLayoutComponent } from './layouts/admin-layout/app-layout.component';
 import { AuthGuard } from './modules/core/guards';
 
 export const AppRoutes: Routes = [
@@ -11,13 +11,13 @@ export const AppRoutes: Routes = [
   },
   {
     path: '',
-    component: AdminLayoutComponent,
+    component: AppLayoutComponent,
     children: [
       {
         path: '',
         loadChildren: () =>
-          import('./layouts/admin-layout/admin-layout.module').then(
-            (x) => x.AdminLayoutModule
+          import('./layouts/admin-layout/app-layout.module').then(
+            (x) => x.AppLayoutModule
           ),
       },
     ],

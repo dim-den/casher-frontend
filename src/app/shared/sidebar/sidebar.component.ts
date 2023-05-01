@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../modules/core/services';
+import { AuthenticationService } from '../../modules/core/services';
 import { BehaviorSubject } from 'rxjs';
 
 export interface RouteInfo {
