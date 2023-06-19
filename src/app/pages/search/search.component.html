@@ -86,11 +86,12 @@
         <input type='text' class='form-control' placeholder='description' [formControl]='form.controls.description'>
       </div>
 
-      <div class='d-flex justify-content-between p-2' fxFlex='200px'>
+      <div class='d-flex justify-content-between p-2' fxFlex='250px'>
         <ngb-pagination
           class='pagination-red'
           [collectionSize]='items.totalCount'
           [(page)]='page'
+          [maxSize]='3'
           [pageSize]='pageSize'
           (pageChange)='loadTransactions()'
         >

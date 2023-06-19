@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    return this.checkPermissions();
+    return this.checkIsAuthorized();
   }
 
   canActivate():
@@ -20,10 +20,10 @@ export class AuthGuard implements CanActivate, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.checkPermissions();
+    return this.checkIsAuthorized();
   }
 
-  private checkPermissions(): Promise<boolean> | boolean {
+  private checkIsAuthorized(): Promise<boolean> | boolean {
     if (!this.authService.isAuthorized) {
       this.authService.logoutAndRedirectToLogin();
       return false;

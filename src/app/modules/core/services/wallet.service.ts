@@ -21,10 +21,14 @@ export class WalletService {
     private http: HttpClient,
     private authService: AuthenticationService
   ) {
-    this.authService.currentUser$.subscribe(() => {
+    this.authService.currentUser$.subscribe((x) => {
       this.selectedWallet$.next(null);
       this.loadedWallets = [];
       this.availableToSelectWallets$.next([]);
+
+      if(x.id && !this.selectedWallet$.value){
+        this.getAllUserWallets().subscribe();
+      }
     });
   }
 

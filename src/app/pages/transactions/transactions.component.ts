@@ -264,7 +264,7 @@ export class TransactionsComponent {
     modalRef.componentInstance.data = transaction;
 
     modalRef.componentInstance.confirmed.subscribe(() => {
-      this.getTransactionsForSelectedDate();
+      setTimeout(() => this.getTransactionsForSelectedDate(), 50);
       this.walletService.getAllUserWallets().subscribe();
     });
   }

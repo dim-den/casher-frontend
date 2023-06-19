@@ -17,6 +17,6 @@ export class WelcomeComponent {
   }
 
   navigateToRegister() {
-    void this.router.navigate(['auth', 'login']);
+    void this.router.navigate(['auth', 'register']);
   }
 }

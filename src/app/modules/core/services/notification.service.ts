@@ -68,14 +68,6 @@ export class NotificationService {
       this.showError(message);
     });
 
-    this.connection.on('regularTransaction', (message: string) => {
-      this.showError(message);
-    });
-
-    this.connection.on('regularTransaction', (message: string) => {
-      this.showError(message);
-    });
-
     this.connection.on('unread', (message: string) => {
       const notifications = JSON.parse(message) as UnreadNotification[];
       this.unreadNotifications$.next(notifications);
